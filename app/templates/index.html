@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>프린세스 메이커 v1</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>스테이블 디퓨젼 드레스 생성(VTON 아님)</h1>
+      <form id="uploadForm">
+        <br />
+        <div class="select-image-container">
+          <label for="imageInput">업로드할 이미지 선택(전신 사진)</label>
+          <div class="upload-btn-container">
+            <input type="file" id="imageInput" style="display: none" required />
+            <button type="button" id="customFileBtn">파일 선택</button>
+            <span id="fileName">선택된 파일 없음</span>
+          </div>
+        </div>
+
+        <div class="prompt-container">
+          <label class="prompt-label" for="positivePrompt">Positive Prompt</label>
+          <textarea id="positivePrompt" placeholder="긍정적 설명 입력(영어 단어 형태)" required rows="6"></textarea>
+          <label class="checkbox-label">
+            <input type="checkbox" id="useDefaultPositive" />
+            기본 프롬프트 사용
+          </label>
+        </div>
+
+        <div class="prompt-container">
+          <label class="prompt-label" for="negativePrompt">Negative Prompt</label>
+          <textarea id="negativePrompt" placeholder="부정적 설명 입력(영어 단어 형태)" required rows="6"></textarea>
+          <label class="checkbox-label">
+            <input type="checkbox" id="useDefaultNegative" />
+            기본 프롬프트 사용
+          </label>
+        </div>
+        <button id="createBtn" type="submit">이미지 생성 시작</button>
+      </form>
+
+      <div id="loading" style="display: none">
+        <div id="spinner"></div>
+        <div id="loadingText">로딩중</div>
+      </div>
+
+      <div class="images-container">
+        <div id="originalImageContainer"></div>
+        <div id="result"></div>
+      </div>
+      <div>
+        <p>memo : 기본 프롬프트 사용을 누르는걸 추천</p>
+        <p>사진은 서버에 저장됩니다.</p>
+      </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/script-241015042555.js') }}"></script>
+  </body>
+</html>
