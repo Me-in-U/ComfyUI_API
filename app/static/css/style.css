@@ -1,0 +1,162 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap");
+
+/* 기본설정 */
+div {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+html {
+  line-height: normal; /*기본 행간 높이*/
+}
+
+body,
+html {
+  font-family: Noto Sans KR, Arial, sans-serif;
+  padding: 20px;
+  background-color: #f4f4f4;
+}
+
+/* 업로드 버튼 */
+.upload-btn-container {
+  align-items: center;
+  justify-content: left;
+  display: flex;
+  margin-top: 3px;
+}
+
+#customFileBtn {
+  width: auto;
+  margin-top: 0px;
+  margin-right: 10px;
+  padding: 10px 20px;
+  background-color: #ffa600;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#customFileBtn:hover {
+  background-color: #c57600;
+}
+
+#fileName {
+  font-size: 16px;
+  color: #555;
+  vertical-align: middle;
+  align-content: center;
+}
+
+.container {
+  min-width: 400px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 프롬프트 부분 */
+textarea {
+  width: 100%;
+  height: auto;
+  margin-top: 3px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  resize: none;
+  transition: opacity 0.5s ease; /* 투명도 변경에 대한 트랜지션 설정 */
+}
+.prompt-label {
+  margin-left: 3px;
+}
+.checkbox-label {
+  display: block;
+  margin-top: 0px;
+  font-size: 0.9em;
+}
+
+.prompt-container,
+.select-image-container {
+  margin-top: 20px;
+}
+.opacity-zero {
+  opacity: 0;
+}
+
+.opacity-one {
+  opacity: 1;
+}
+
+/* 생성 버튼 */
+#createBtn {
+  width: 100%;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: block;
+}
+
+#createBtn:hover {
+  background-color: #0056b3;
+}
+
+/* 이미지 표시 부분 */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+#result,
+#originalImageContainer {
+  margin-top: 20px;
+}
+
+.images-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.images-container > div {
+  width: 48%;
+}
+
+/* 로딩 */
+#loading {
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  margin-top: 20px;
+  color: #555;
+  visibility: none;
+}
+
+#spinner {
+  margin: 2px;
+  width: 25px;
+  height: 25px;
+  box-sizing: border-box;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top-color: black;
+  border-radius: 100%;
+  animation: spin 1s ease-in-out infinite;
+}
+
+#loadingText {
+  margin-left: 10px;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
