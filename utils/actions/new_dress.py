@@ -21,8 +21,8 @@ def new_dress(workflow, positive_prompt, negative_prompt, save_previews=False):
     k_sampler_id = [key for key, value in prompt.items(
     ) if value['class_type'] == 'KSampler' and value['_meta']['title'] == 'KSampler(NDI)'][0]
     prompt[k_sampler_id]['inputs']['seed'] = generate_random_15_digit_number()
-    # print("seed updated to: ", prompt[k_sampler_id]['inputs']['seed'])
 
+    # 이미지 생성 함수 호출
     generate_image_by_prompt(
         prompt, './output/', save_previews)
 

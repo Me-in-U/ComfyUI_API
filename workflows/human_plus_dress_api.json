@@ -29,7 +29,7 @@
     },
     "class_type": "KSampler",
     "_meta": {
-      "title": "KSampler"
+      "title": "KSampler(SB)"
     }
   },
   "9": {
@@ -51,7 +51,7 @@
     },
     "class_type": "CLIPTextEncode",
     "_meta": {
-      "title": "Positive Prompt"
+      "title": "Positive Prompt(SB)"
     }
   },
   "12": {
@@ -64,7 +64,7 @@
     },
     "class_type": "CLIPTextEncode",
     "_meta": {
-      "title": "Negative Prompt"
+      "title": "Negative Prompt(SB)"
     }
   },
   "13": {
@@ -198,7 +198,7 @@
     },
     "class_type": "LoadImage",
     "_meta": {
-      "title": "input_img1"
+      "title": "human_image(SB)"
     }
   },
   "47": {
