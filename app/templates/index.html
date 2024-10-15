@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>프린세스 메이커 v1</title>
+    <title>프린세스 메이커</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}" />
   </head>
@@ -14,22 +14,30 @@
       <select id="optionSelect" class="select-dropdown">
         <option value="human_new_dress">[사람사진 + 프롬프트]로 생성</option>
         <option value="prompt_new_dress">[프롬프트]로 생성</option>
-        <option value="vton_dress">Vton로 생성(아직 미구현)</option>
+        <option value="vton_dress">VTON로 생성(아직 미구현)</option>
       </select>
       <!-- 폼 -->
       <form id="uploadForm">
         <br />
         <!-- 이미지 선택 -->
-        <div class="select-image-container">
-          <label for="imageInput">업로드할 이미지 선택(전신 사진)</label>
+        <div class="animated" id="select-image-container1">
+          <label for="imageInput1">업로드할 이미지 선택(전신 사진)</label>
           <div class="upload-btn-container">
-            <input type="file" id="imageInput" style="display: none" required />
-            <button type="button" id="customFileBtn">파일 선택</button>
-            <span id="fileName">선택된 파일 없음</span>
+            <input type="file" id="imageInput1" style="display: none" required />
+            <button type="button" class="customFileBtn" id="customFileBtn1">파일 선택</button>
+            <span class="fileName" id="fileName1">선택된 파일 없음</span>
+          </div>
+        </div>
+        <div class="animated hidden" id="select-image-container2">
+          <label for="imageInput2">업로드할 이미지 선택(옷 사진)</label>
+          <div class="upload-btn-container" id="select-image-container2">
+            <input type="file" id="imageInput2" style="display: none" />
+            <button type="button" class="customFileBtn" id="customFileBtn2">파일 선택</button>
+            <span class="fileName" id="fileName2">선택된 파일 없음</span>
           </div>
         </div>
         <!-- 프롬프트 -->
-        <div class="prompt-container">
+        <div class="animated prompt-container" id="positivePrompt-container">
           <label class="prompt-label" for="positivePrompt">Positive Prompt</label>
           <textarea id="positivePrompt" placeholder="긍정적 설명 입력(영어 단어 형태)" required rows="6"></textarea>
           <label class="checkbox-label">
@@ -37,7 +45,7 @@
             기본 프롬프트 사용
           </label>
         </div>
-        <div class="prompt-container">
+        <div class="animated prompt-container" id="negativePrompt-container">
           <label class="prompt-label" for="negativePrompt">Negative Prompt</label>
           <textarea id="negativePrompt" placeholder="부정적 설명 입력(영어 단어 형태)" required rows="6"></textarea>
           <label class="checkbox-label">
@@ -54,6 +62,7 @@
       </div>
       <div class="images-container">
         <div id="original_image"></div>
+        <div id="clothes_image" style="display: none"></div>
         <div id="result_image"></div>
       </div>
       <!-- 메모 -->

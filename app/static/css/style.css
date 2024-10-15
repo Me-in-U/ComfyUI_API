@@ -43,7 +43,7 @@ option {
   margin-top: 3px;
 }
 
-#customFileBtn {
+.customFileBtn {
   width: auto;
   margin-top: 0px;
   margin-right: 10px;
@@ -55,11 +55,11 @@ option {
   cursor: pointer;
 }
 
-#customFileBtn:hover {
+.customFileBtn:hover {
   background-color: #c57600;
 }
 
-#fileName {
+.fileName {
   font-size: 16px;
   color: #555;
   vertical-align: middle;
@@ -79,18 +79,19 @@ option {
 }
 
 /* 파일 선택 컨테이너의 기본 스타일 */
-.select-image-container {
+.animated {
   overflow: hidden;
-  transition: all 0.5s ease; /* 모든 변경에 대해 부드럽게 전환 */
-  max-height: 150px; /* 초기 최대 높이 설정 */
-  opacity: 1; /* 초기 투명도 설정 */
+  transition: all 0.5s ease;
+  max-height: 200px;
+  opacity: 1;
   margin-bottom: 20px;
 }
 
 .hidden {
-  opacity: 0; /* 완전 투명 */
-  max-height: 0; /* 최대 높이를 0으로 */
-  margin: 0; /* 마진 제거 */
+  transition: all 0.5s ease;
+  opacity: 0;
+  max-height: 0;
+  margin: 0;
 }
 
 /* 프롬프트 */
