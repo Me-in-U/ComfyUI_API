@@ -1,0 +1,146 @@
+{
+  "181": {
+    "inputs": {
+      "ckpt_name": "v1-5-pruned.safetensors"
+    },
+    "class_type": "CheckpointLoaderSimple",
+    "_meta": {
+      "title": "Load Checkpoint(NDI)"
+    }
+  },
+  "182": {
+    "inputs": {
+      "lora_name": "Wedding dressV1.safetensors",
+      "strength_model": 0.8,
+      "strength_clip": 1,
+      "model": [
+        "181",
+        0
+      ],
+      "clip": [
+        "181",
+        1
+      ]
+    },
+    "class_type": "LoraLoader",
+    "_meta": {
+      "title": "Load LoRA(NDI)"
+    }
+  },
+  "183": {
+    "inputs": {
+      "vae_name": "vae-ft-mse-840000-ema-pruned.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE(NDI)"
+    }
+  },
+  "184": {
+    "inputs": {
+      "text": "full body of a woman,elegant floor-length skirt, bride, full body portrait, wedding dress, white clothes, (1 girl:1.5), beautiful and pretty girl, smile, (beautiful wedding dress:1.2), (luxury wedding dress:1.2), (standing:1.2),(empty background: 1.2), (Slim body: 1.2), (Narrow waist: 1.2), (Slim calf: 1.2), (Tall: 1.2), best quality, best shadow, masterpiece, realistic, photo-realistic, realism, finely detail, Super Resolution, super detail, ultra-detailed, ultra high res, RAW photo, detailed cafe, perfect fingers",
+      "clip": [
+        "182",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "Positive Prompt(NDI)"
+    }
+  },
+  "185": {
+    "inputs": {
+      "text": "2d art, 3d art, ((illustration)), anime, cartoon, bad_pictures, bad-artist, EasyNegative,(worst quality:1.6), (low quality:1.6), (normal quality:1.6), lowres, bad anatomy, bad hands, vaginas in breasts, ((monochrome)), ((grayscale)), collapsed eyeshadow, multiple eyebrow, (cropped), oversaturated, extra limb, missing limbs, deformed hands, long neck, long body, imperfect, (bad hands), signature, watermark, username, artist name, conjoined fingers, deformed fingers, ugly eyes, imperfect eyes, skewed eyes, unnatural face, unnatural body, error, bad image, bad photo",
+      "clip": [
+        "182",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "Negative Prompt(NDI)"
+    }
+  },
+  "186": {
+    "inputs": {
+      "seed": [
+        "187",
+        0
+      ],
+      "steps": 80,
+      "cfg": 4,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "normal",
+      "denoise": 1,
+      "model": [
+        "182",
+        0
+      ],
+      "positive": [
+        "184",
+        0
+      ],
+      "negative": [
+        "185",
+        0
+      ],
+      "latent_image": [
+        "193",
+        0
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "KSampler(NDI)"
+    }
+  },
+  "187": {
+    "inputs": {
+      "seed": 891788746234169
+    },
+    "class_type": "Seed (rgthree)",
+    "_meta": {
+      "title": "Seed (rgthree)(NDI)"
+    }
+  },
+  "188": {
+    "inputs": {
+      "samples": [
+        "186",
+        0
+      ],
+      "vae": [
+        "183",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode(NDI)"
+    }
+  },
+  "189": {
+    "inputs": {
+      "images": [
+        "188",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "image(NDI)"
+    }
+  },
+  "193": {
+    "inputs": {
+      "width": 480,
+      "height": 720,
+      "batch_size": 1
+    },
+    "class_type": "EmptyLatentImage",
+    "_meta": {
+      "title": "Empty Latent Image(NDI)"
+    }
+  }
+}

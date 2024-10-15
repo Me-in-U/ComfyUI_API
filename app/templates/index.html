@@ -4,10 +4,19 @@
     <meta charset="UTF-8" />
     <title>프린세스 메이커 v1</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}" />
   </head>
   <body>
     <div class="container">
-      <h1>스테이블 디퓨젼 드레스 생성(VTON 아님)</h1>
+      <h1>스테이블 디퓨젼 드레스 생성</h1>
+      <!-- 이미지 생성 옵션 선택 드롭다운 -->
+      <label for="optionSelect">옵션 선택:</label>
+      <select id="optionSelect" class="select-dropdown">
+        <option value="human_new_dress">[사람사진 + 프롬프트]로 생성</option>
+        <option value="prompt_new_dress">[프롬프트]로 생성</option>
+        <option value="vton_dress">Vton로 생성(아직 미구현)</option>
+      </select>
+      <!-- 동적으로 추가될 폼의 컨테이너 -->
       <form id="uploadForm">
         <br />
         <div class="select-image-container">
@@ -45,14 +54,14 @@
       </div>
 
       <div class="images-container">
-        <div id="originalImageContainer"></div>
-        <div id="result"></div>
+        <div id="original_image"></div>
+        <div id="result_image"></div>
       </div>
       <div>
         <p>memo : 기본 프롬프트 사용을 누르는걸 추천</p>
         <p>사진은 서버에 저장됩니다.</p>
       </div>
     </div>
-    <script src="{{ url_for('static', filename='js/script-241015042555.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/script-241015094100.js') }}"></script>
   </body>
 </html>

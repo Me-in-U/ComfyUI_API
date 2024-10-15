@@ -39,6 +39,23 @@ def generate_image_by_prompt_and_image(prompt, output_path, input_path, filename
         ws.close()
 
 
+def generate_image_by_prompt(prompt, output_path, save_previews=False):
+    try:
+        print("generate_image_by_prompt_and_image")
+        ws, server_address, client_id = open_websocket_connection()
+        print(ws, server_address, client_id)
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~done~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        prompt_id = queue_prompt(prompt, client_id, server_address)[
+            'prompt_id']
+        track_progress(prompt, ws, prompt_id)
+        images = get_images(prompt_id, server_address, save_previews)
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Saving image~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        save_image(images, output_path, save_previews)
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~done~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    finally:
+        ws.close()
+
+
 def save_image(images, output_path, save_previews):
     try:
         # 파일을 쓰기 모드로 열면 기존 내용이 삭제됩니다.

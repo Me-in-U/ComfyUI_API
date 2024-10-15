@@ -3,6 +3,7 @@ from werkzeug.utils import secure_filename
 from api.open_websocket import open_websocket_connection
 from api.websocket_api import clear_comfy_cache
 from utils.actions.human_plus_dress import human_plus_dress
+from utils.actions.new_dress import new_dress
 from utils.actions.load_workflow import load_workflow
 # from flask_cors import CORS  # CORS 모듈 추가
 import os
@@ -37,10 +38,10 @@ def test():
 
 
 @app.route('/human_plus_dress', methods=['POST'])
-def human_plus_dress():
+def img_human_plus_dress():
     try:
         workflow = load_workflow(
-            "E:\Languages\Apache24\ComfyUI_API\workflows\workflow_api.json")
+            "E:\Languages\Apache24\ComfyUI_API\workflows\human_plus_dress_api.json")
 
         # 사진 읽고 저장
         image_file = request.files['image']
@@ -62,6 +63,35 @@ def human_plus_dress():
         # 실행 및 결과 이미지 경로 받기
         result_image_paths = human_plus_dress(
             workflow, image_path, positive_prompt, negative_prompt, save_previews=True)
+
+        # 메모리 비우기
+        _, server_address, _ = open_websocket_connection()
+        clear_comfy_cache(server_address=server_address,
+                          unload_models=True, free_memory=True)
+
+        # 결과 이미지를 Base64로 인코딩하여 반환
+        encoded_images = [encode_image_to_base64(
+            path) for path in result_image_paths]
+
+        return jsonify({"message": "Image processed successfully", "results": encoded_images})
+
+    except Exception as e:
+        print(f"Flask An error occurred: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route('/new_dress', methods=['POST'])
+def img_new_dress():
+    try:
+        workflow = load_workflow(
+            "E:\Languages\Apache24\ComfyUI_API\workflows\\new_dress_api.json")
+        # Prompt 파일 읽기
+        positive_prompt = request.form['positive_prompt']
+        negative_prompt = request.form['negative_prompt']
+
+        # 실행 및 결과 이미지 경로 받기
+        result_image_paths = new_dress(
+            workflow, positive_prompt, negative_prompt, save_previews=True)
 
         # 메모리 비우기
         _, server_address, _ = open_websocket_connection()

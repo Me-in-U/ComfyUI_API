@@ -18,7 +18,24 @@ html {
   background-color: #f4f4f4;
 }
 
-/* 업로드 버튼 */
+/* 옵션 스타일 */
+option {
+  padding: 10px; /* 옵션 패딩 */
+}
+
+/* 드롭다운 스타일 */
+.select-dropdown {
+  width: 300px; /* 너비 설정 */
+  padding: 8px 12px; /* 패딩 설정 */
+  border-radius: 5px; /* 모서리 둥글게 */
+  border: 1px solid #ccc; /* 테두리 설정 */
+  background-color: #f9f9f9; /* 배경 색상 */
+  margin-bottom: 5px; /* 하단 여백 */
+  cursor: pointer; /* 커서 스타일 */
+  font-size: medium;
+}
+
+/* 사진 업로드 버튼 */
 .upload-btn-container {
   align-items: center;
   justify-content: left;
@@ -49,6 +66,7 @@ html {
   align-content: center;
 }
 
+/* 전체 */
 .container {
   min-width: 400px;
   max-width: 800px;
@@ -60,7 +78,22 @@ html {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* 프롬프트 부분 */
+/* 파일 선택 컨테이너의 기본 스타일 */
+.select-image-container {
+  overflow: hidden;
+  transition: all 0.5s ease; /* 모든 변경에 대해 부드럽게 전환 */
+  max-height: 150px; /* 초기 최대 높이 설정 */
+  opacity: 1; /* 초기 투명도 설정 */
+  margin-bottom: 20px;
+}
+
+.hidden {
+  opacity: 0; /* 완전 투명 */
+  max-height: 0; /* 최대 높이를 0으로 */
+  margin: 0; /* 마진 제거 */
+}
+
+/* 프롬프트 */
 textarea {
   width: 100%;
   height: auto;
@@ -75,16 +108,16 @@ textarea {
 .prompt-label {
   margin-left: 3px;
 }
+.prompt-container {
+  margin-bottom: 20px;
+}
 .checkbox-label {
   display: block;
   margin-top: 0px;
   font-size: 0.9em;
 }
 
-.prompt-container,
-.select-image-container {
-  margin-top: 20px;
-}
+/* 투명도 */
 .opacity-zero {
   opacity: 0;
 }
@@ -96,7 +129,7 @@ textarea {
 /* 생성 버튼 */
 #createBtn {
   width: 100%;
-  margin-top: 20px;
+  margin-bottom: 20px;
   padding: 10px 20px;
   background-color: #007bff;
   color: white;
@@ -136,6 +169,7 @@ img {
   justify-content: center;
   font-size: 20px;
   margin-top: 20px;
+  margin-bottom: 20px;
   color: #555;
   visibility: none;
 }
