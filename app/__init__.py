@@ -124,8 +124,10 @@ def img_vton_dress():
             "E:\Languages\Apache24\ComfyUI_API\input", filename2)
         image_file2.save(image_path2)
 
+        return jsonify({"message": "미구현", "results": [encode_image_to_base64("E:\Languages\Apache24\ComfyUI_API\미구현.png")]})
+
         # 실행 및 결과 이미지 경로 받기
-        result_image_paths = human_plus_dress(
+        result_image_paths = vton_dress(
             workflow, image_path1, image_path2, save_previews=True)
 
         # 메모리 비우기
