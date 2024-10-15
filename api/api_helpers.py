@@ -4,54 +4,31 @@ import io
 import os
 
 # Assuming the import paths are correct and the methods are defined elsewhere:
-from api.websocket_api import queue_prompt, get_history, get_image, upload_image, clear_comfy_cache
+from api.websocket_api import queue_prompt, get_history, get_image, upload_image
 from api.open_websocket import open_websocket_connection
-
-
-def generate_image_by_prompt(prompt, output_path, save_previews=False):
-    try:
-        ws, server_address, client_id = open_websocket_connection()
-        prompt_id = queue_prompt(prompt, client_id, server_address)[
-            'prompt_id']
-        track_progress(prompt, ws, prompt_id)
-        images = get_images(prompt_id, server_address, save_previews)
-        save_image(images, output_path, save_previews)
-    finally:
-        ws.close()
 
 
 def generate_image_by_prompt_and_image(prompt, output_path, input_path, filename, save_previews=False):
     try:
-        print("generate_image_by_prompt_and_image")
         ws, server_address, client_id = open_websocket_connection()
-        print(ws, server_address, client_id)
-        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Uploading image~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         upload_image(input_path, filename, server_address)
-        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~done~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         prompt_id = queue_prompt(prompt, client_id, server_address)[
             'prompt_id']
         track_progress(prompt, ws, prompt_id)
         images = get_images(prompt_id, server_address, save_previews)
-        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Saving image~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         save_image(images, output_path, save_previews)
-        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~done~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
     finally:
         ws.close()
 
 
 def generate_image_by_prompt(prompt, output_path, save_previews=False):
     try:
-        print("generate_image_by_prompt_and_image")
         ws, server_address, client_id = open_websocket_connection()
-        print(ws, server_address, client_id)
-        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~done~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         prompt_id = queue_prompt(prompt, client_id, server_address)[
             'prompt_id']
         track_progress(prompt, ws, prompt_id)
         images = get_images(prompt_id, server_address, save_previews)
-        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Saving image~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         save_image(images, output_path, save_previews)
-        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~done~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
     finally:
         ws.close()
 
@@ -157,7 +134,3 @@ def get_images(prompt_id, server_address, allow_preview=False):
                 output_images.append(output_data)
 
     return output_images
-
-
-def clear():
-    clear_comfy_cache()
