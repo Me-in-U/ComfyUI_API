@@ -162,6 +162,17 @@ function setupOptionSelection() {
     imageInput2.required = isVtonDress;
     positivePromptText.required = isHumanNewDress || isPromptNewDress;
     negativePromptText.required = isHumanNewDress || isPromptNewDress;
+
+    //프롬프트 초기화
+    const input1 = document.getElementById("positivePrompt");
+    const input2 = document.getElementById("negativePrompt");
+    input1.value = "";
+    input2.value = "";
+
+    const checkbox1 = document.getElementById("useDefaultPositive");
+    const checkbox2 = document.getElementById("useDefaultNegative");
+    checkbox1.checked = false;
+    checkbox2.checked = false;
   });
 }
 
@@ -192,11 +203,12 @@ function configurePrompt(promptId, checkboxId) {
   document.getElementById(checkboxId).addEventListener("change", function () {
     const checkbox = document.getElementById(checkboxId);
     const input = document.getElementById(promptId);
+    const optionValue = document.getElementById("optionSelect").value;
     input.classList.remove("opacity-one");
     input.classList.add("opacity-zero");
     if (checkbox.checked) {
       setTimeout(() => {
-        input.value = getDefaultPromptValue(promptId);
+        input.value = optionValue === "human_new_dress" ? getDefaultPromptValue1(promptId) : getDefaultPromptValue2(promptId);
         input.classList.remove("opacity-zero");
         input.classList.add("opacity-one");
       }, 300);
@@ -212,12 +224,22 @@ function configurePrompt(promptId, checkboxId) {
   });
 }
 
-function getDefaultPromptValue(promptId) {
+function getDefaultPromptValue1(promptId) {
   const prompts = {
     positivePrompt:
-      "full body of a woman, elegant floor-length skirt, bride, full body portrait, wedding dress, white clothes, (1 girl:1.5), beautiful and pretty girl, smile, (beautiful wedding dress:1.2), (luxury wedding dress:1.2), (standing:1.2),(empty background: 1.2), (Slim body: 1.2), (Narrow waist: 1.2), (Slim calf: 1.2), (Tall: 1.2), best quality, best shadow, masterpiece, realistic, photo-realistic, realism, finely detail, Super Resolution, super detail, ultra-detailed, ultra high res, RAW photo, detailed cafe, perfect fingers",
+      "(white dress:1.2), (luxury wedding dress:1.3), bride,long dress,elegant floor-length skirt,(korean1.2), Best Quality, (Masterpiece:1.4), (Realism:1.2), (Realisitc:1.2), 4K,(photorealistic:1.3), Detailed, 1 girl, beautiful and pretty girl, (black background: 1.3), photo-realistic, realism, finely detail, Super Resolution, super detail, ultra-detailed, ultra high res, RAW photo, detailed cafe, perfect fingers, beautiful face, beautiful detailed eyes, symmetric eyes",
     negativePrompt:
-      "2d art, 3d art, ((illustration)), anime, cartoon, bad pictures, bad artist, EasyNegative,(worst quality:1.6), (low quality:1.6), (normal quality:1.6), lowres, bad anatomy, bad hands, vaginas in breasts, ((monochrome)), ((grayscale)), collapsed eyeshadow, multiple eyebrow, (cropped), oversaturated, extra limb, missing limbs, deformed hands, long neck, long body, imperfect, (bad hands), signature, watermark, username, artist name, conjoined fingers, deformed fingers, ugly eyes, imperfect eyes, skewed eyes, unnatural face, unnatural body, error, bad image, bad photo",
+      "(black clothes:1.5), (black dress:1.5), (black accessories), text, paintings,sketches,worst quality,low quality,easynegative,lowres,bad hands,bad anatomy,poorly drawn hands,poorly drawn face, extra digit,fewer digits,signature,blurry, bad feet, fused girls, username,duplicate,morbid,mutilated, mutated hands,mutation, deformed, bad proportions, malformed limbs, extra limbs, disfigured, gross proportions,disfigured, bad art, deformed,plump, bad anatomy, error, watermark,long neck, long torso, bad feet, pubic hair, extra digit bad legs,missing legs,missing arms, bad anatomy, wrong finger,missing fingers,big breasts,huge breasts,large breasts,bad hands, extra arms,extra hands,ugly face,cloned face, deformed face,malformed face, extra head,badhandv4,multiple view, multiple views,bad_pictures,logo,",
+  };
+  return prompts[promptId];
+}
+
+function getDefaultPromptValue2(promptId) {
+  const prompts = {
+    positivePrompt:
+      "Best Quality, (Masterpiece:1.4), (Realism:1.2), (Realisitc:1.2), 4K,(photorealistic:1.3), Detailed,elegant floor-length skirt,long dress, bride, (white dress:1.4), korean, 1 girl, beautiful and pretty girl, (luxury wedding dress:1.3), (black background: 1.4), photo-realistic, realism, finely detail, Super Resolution, super detail, ultra-detailed, ultra high res, RAW photo, detailed cafe, perfect fingers, beautiful face, beautiful detailed eyes, symmetric eyes",
+    negativePrompt:
+      "(black color dress:1.5),black color accessories,Paintings,sketches, (worst quality, low quality, normal quality:1.7),lowres, blurry, text, logo, ((monochrome)), ((grayscale)), easynegative, badhandv, , wrong finger, lowres, bad anatomy, bad handsmissing fingers,extra digit ,fewer digits,signature,watermark, username, blurry, bad feet, fused girls, fushion, signature, watermark, username, blurry, (bad feet:1.1),, monochrome, duplicate, morbid, mutilated, long neck, mutated hands, poorly drawn hands, poorly drawn face, mutation, deformed, bad proportions, malformed limbs, extra limbs, cloned face, disfigured, gross proportions, (missing arms:1.331), (missing legs:1.331), (extra arms:1.331), (extra legs:1.331), plump, bad legs, bad anatomy, bad hands, text, error, missing fingers,watermark, username, blurry, long body, bad anatomy, bad hands, missing fingers, pubic hair,extra digit, fewer digits, bad anatomy, bad hands, missing fingers, signature, watermark, username, blurry,huge breasts,Large Breasts,kid,children,extra hands,extra arms((disfigured)), ((bad art)), ((deformed)),ugly face,umbrella,deformed face,malformed face,extra head, easynegative, badhandv4,Big Breasts,multiple girls, multiple view,Big Breasts,multiple girls, multiple views,Long Necks,Long Torso,  bad_pictures",
   };
   return prompts[promptId];
 }
