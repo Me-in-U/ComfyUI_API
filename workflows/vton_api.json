@@ -1,0 +1,105 @@
+{
+  "1": {
+    "inputs": {
+      "low_vram": true
+    },
+    "class_type": "IDM_VTON_PIPELINE_NN",
+    "_meta": {
+      "title": "IDM-VTON Pipeline (diffusers)"
+    }
+  },
+  "2": {
+    "inputs": {
+      "auto_mask_category": "dresses",
+      "prompt": "bride, (luxury wedding dress:1.3), elegant floor-length skirt,  full body portrait, wedding dress, (beautiful wedding dress:1.2), best quality, best shadow, masterpiece, realistic, photo-realistic, realism, finely detail, Super Resolution, super detail, ultra-detailed, ultra high res",
+      "fit_human_image_size": false,
+      "fix_origin_merge": false,
+      "denoise_steps": 30,
+      "seed": 799831636,
+      "pipeline": [
+        "1",
+        0
+      ],
+      "human_image": [
+        "170",
+        0
+      ],
+      "clothes_image": [
+        "195",
+        0
+      ],
+      "densepose_image": [
+        "3",
+        0
+      ]
+    },
+    "class_type": "IDM_VTON_NN",
+    "_meta": {
+      "title": "IDM-VTON (diffusers)"
+    }
+  },
+  "3": {
+    "inputs": {
+      "model": "densepose_r50_fpn_dl.torchscript",
+      "cmap": "Viridis (MagicAnimate)",
+      "resolution": 512,
+      "image": [
+        "4",
+        0
+      ]
+    },
+    "class_type": "DensePosePreprocessor",
+    "_meta": {
+      "title": "DensePose Estimator"
+    }
+  },
+  "4": {
+    "inputs": {
+      "image": "happy-woman-in-a-casual-shirt-full-body.jpg",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "human_image"
+    }
+  },
+  "170": {
+    "inputs": {
+      "max_width": 768,
+      "max_height": 768,
+      "min_width": 0,
+      "min_height": 0,
+      "crop_if_required": "no",
+      "images": [
+        "4",
+        0
+      ]
+    },
+    "class_type": "ConstrainImage|pysssss",
+    "_meta": {
+      "title": "Constrain Image 🐍"
+    }
+  },
+  "195": {
+    "inputs": {
+      "image": "1553336191477.jpg",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "clothes_image"
+    }
+  },
+  "197": {
+    "inputs": {
+      "images": [
+        "2",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "result"
+    }
+  }
+}

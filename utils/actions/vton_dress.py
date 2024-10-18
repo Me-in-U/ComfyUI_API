@@ -1,5 +1,5 @@
 from api.api_helpers import generate_image_by_image_image
-from utils.helpers.randomize_seed import generate_random_15_digit_number
+from utils.helpers.randomize_seed import generate_random_int
 from api.open_websocket import open_websocket_connection
 import json
 
@@ -9,8 +9,8 @@ def vton_dress(workflow, input_path1, input_path2, save_previews=False):
 
     # generate_random_15_digit_number로 랜덤 시드 생성
     k_sampler_id = [key for key, value in prompt.items(
-    ) if value['class_type'] == 'KSampler' and value['_meta']['title'] == 'KSampler(VTON)'][0]
-    prompt[k_sampler_id]['inputs']['seed'] = generate_random_15_digit_number()
+    ) if value['class_type'] == 'IDM_VTON_NN' and value['_meta']['title'] == 'IDM-VTON (diffusers)'][0]
+    prompt[k_sampler_id]['inputs']['seed'] = generate_random_int()
 
     # input_img 이미지 path 변경
     image_loader1 = [key for key, value in prompt.items(

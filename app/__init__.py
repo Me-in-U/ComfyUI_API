@@ -4,6 +4,7 @@ from api.open_websocket import open_websocket_connection
 from api.websocket_api import clear_comfy_cache
 from utils.actions.human_plus_dress import human_plus_dress
 from utils.actions.new_dress import new_dress
+from utils.actions.vton_dress import vton_dress
 from utils.actions.load_workflow import load_workflow
 from flask_cors import CORS  # CORS 모듈 추가
 import os
@@ -19,6 +20,9 @@ CORS(app)
 
 @app.route('/')
 def main():
+    _, server_address, _ = open_websocket_connection()
+    clear_comfy_cache(server_address=server_address,
+                      unload_models=True, free_memory=True)
     return render_template("index.html")
 
 
@@ -108,7 +112,7 @@ def img_new_dress():
 def img_vton_dress():
     try:
         workflow = load_workflow(
-            "E:\Languages\Apache24\ComfyUI_API\workflows\\vton_dress.json")
+            "E:\Languages\Apache24\ComfyUI_API\workflows\\vton_api.json")
 
         # 사진 읽고 저장
         image_file1 = request.files['image1']
@@ -124,7 +128,7 @@ def img_vton_dress():
             "E:\Languages\Apache24\ComfyUI_API\input", filename2)
         image_file2.save(image_path2)
 
-        return jsonify({"message": "미구현", "results": [encode_image_to_base64("E:\Languages\Apache24\ComfyUI_API\미구현.png")]})
+        # return jsonify({"message": "미구현", "results": [encode_image_to_base64("E:\Languages\Apache24\ComfyUI_API\미구현.png")]})
 
         # 실행 및 결과 이미지 경로 받기
         result_image_paths = vton_dress(

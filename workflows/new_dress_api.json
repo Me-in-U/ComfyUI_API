@@ -1,30 +1,11 @@
 {
   "181": {
     "inputs": {
-      "ckpt_name": "v1-5-pruned.safetensors"
+      "ckpt_name": "beautifulRealistic_brav5.safetensors"
     },
     "class_type": "CheckpointLoaderSimple",
     "_meta": {
       "title": "Load Checkpoint(NDI)"
-    }
-  },
-  "182": {
-    "inputs": {
-      "lora_name": "Wedding dressV1.safetensors",
-      "strength_model": 0.8,
-      "strength_clip": 1,
-      "model": [
-        "181",
-        0
-      ],
-      "clip": [
-        "181",
-        1
-      ]
-    },
-    "class_type": "LoraLoader",
-    "_meta": {
-      "title": "Load LoRA(NDI)"
     }
   },
   "183": {
@@ -36,11 +17,50 @@
       "title": "Load VAE(NDI)"
     }
   },
-  "184": {
+  "187": {
     "inputs": {
-      "text": "full body of a woman,elegant floor-length skirt, bride, full body portrait, wedding dress, white clothes, (1 girl:1.5), beautiful and pretty girl, smile, (beautiful wedding dress:1.2), (luxury wedding dress:1.2), (standing:1.2),(empty background: 1.2), (Slim body: 1.2), (Narrow waist: 1.2), (Slim calf: 1.2), (Tall: 1.2), best quality, best shadow, masterpiece, realistic, photo-realistic, realism, finely detail, Super Resolution, super detail, ultra-detailed, ultra high res, RAW photo, detailed cafe, perfect fingers",
+      "seed": 142669365378745
+    },
+    "class_type": "Seed (rgthree)",
+    "_meta": {
+      "title": "Seed (rgthree)(NDI)"
+    }
+  },
+  "193": {
+    "inputs": {
+      "width": 512,
+      "height": 768,
+      "batch_size": 1
+    },
+    "class_type": "EmptyLatentImage",
+    "_meta": {
+      "title": "Empty Latent Image(NDI)"
+    }
+  },
+  "196": {
+    "inputs": {
+      "control_net_name": "control_v11p_sd15_openpose_fp16.safetensors"
+    },
+    "class_type": "ControlNetLoader",
+    "_meta": {
+      "title": "Load ControlNet Model"
+    }
+  },
+  "197": {
+    "inputs": {
+      "image": "ComfyUI_00001_.png",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Pose Image"
+    }
+  },
+  "224": {
+    "inputs": {
+      "text": "Best Quality, (Masterpiece:1.4), (Realism:1.2), (Realisitc:1.2), 4K,(photorealistic:1.3), Detailed,elegant floor-length skirt,long dress, bride, (white dress:1.4), korean, 1 girl, beautiful and pretty girl, (luxury wedding dress:1.3), (black background: 1.4), photo-realistic, realism, finely detail, Super Resolution, super detail, ultra-detailed, ultra high res, RAW photo, detailed cafe, perfect fingers, beautiful face, beautiful detailed eyes, symmetric eyes",
       "clip": [
-        "182",
+        "181",
         1
       ]
     },
@@ -49,11 +69,11 @@
       "title": "Positive Prompt(NDI)"
     }
   },
-  "185": {
+  "225": {
     "inputs": {
-      "text": "2d art, 3d art, ((illustration)), anime, cartoon, bad_pictures, bad-artist, EasyNegative,(worst quality:1.6), (low quality:1.6), (normal quality:1.6), lowres, bad anatomy, bad hands, vaginas in breasts, ((monochrome)), ((grayscale)), collapsed eyeshadow, multiple eyebrow, (cropped), oversaturated, extra limb, missing limbs, deformed hands, long neck, long body, imperfect, (bad hands), signature, watermark, username, artist name, conjoined fingers, deformed fingers, ugly eyes, imperfect eyes, skewed eyes, unnatural face, unnatural body, error, bad image, bad photo",
+      "text": "(black color dress:1.5),black color accessories,Paintings,sketches, (worst quality, low quality, normal quality:1.7),lowres, blurry, text, logo, ((monochrome)), ((grayscale)), easynegative, badhandv, , wrong finger, lowres, bad anatomy, bad handsmissing fingers,extra digit ,fewer digits,signature,watermark, username, blurry, bad feet, fused girls, fushion, signature, watermark, username, blurry, (bad feet:1.1),, monochrome, duplicate, morbid, mutilated, long neck, mutated hands, poorly drawn hands, poorly drawn face, mutation, deformed, bad proportions, malformed limbs, extra limbs, cloned face, disfigured, gross proportions, (missing arms:1.331), (missing legs:1.331), (extra arms:1.331), (extra legs:1.331), plump, bad legs, bad anatomy, bad hands, text, error, missing fingers,watermark, username, blurry, long body, bad anatomy, bad hands, missing fingers, pubic hair,extra digit, fewer digits, bad anatomy, bad hands, missing fingers, signature, watermark, username, blurry,huge breasts,Large Breasts,kid,children,extra hands,extra arms\f((disfigured)), ((bad art)), ((deformed)),ugly face,umbrella,deformed face,malformed face,extra head, easynegative, badhandv4,Big Breasts,multiple girls, multiple view,Big Breasts,multiple girls, multiple views,Long Necks,Long Torso,  bad_pictures",
       "clip": [
-        "182",
+        "181",
         1
       ]
     },
@@ -62,28 +82,28 @@
       "title": "Negative Prompt(NDI)"
     }
   },
-  "186": {
+  "226": {
     "inputs": {
       "seed": [
         "187",
         0
       ],
-      "steps": 80,
-      "cfg": 4,
+      "steps": 25,
+      "cfg": 6.98,
       "sampler_name": "dpmpp_2m",
-      "scheduler": "normal",
+      "scheduler": "karras",
       "denoise": 1,
       "model": [
-        "182",
+        "181",
         0
       ],
       "positive": [
-        "184",
+        "228",
         0
       ],
       "negative": [
-        "185",
-        0
+        "228",
+        1
       ],
       "latent_image": [
         "193",
@@ -95,19 +115,10 @@
       "title": "KSampler(NDI)"
     }
   },
-  "187": {
-    "inputs": {
-      "seed": 891788746234169
-    },
-    "class_type": "Seed (rgthree)",
-    "_meta": {
-      "title": "Seed (rgthree)(NDI)"
-    }
-  },
-  "188": {
+  "227": {
     "inputs": {
       "samples": [
-        "186",
+        "226",
         0
       ],
       "vae": [
@@ -120,27 +131,43 @@
       "title": "VAE Decode(NDI)"
     }
   },
-  "189": {
+  "228": {
+    "inputs": {
+      "strength": 1,
+      "start_percent": 0,
+      "end_percent": 1,
+      "positive": [
+        "224",
+        0
+      ],
+      "negative": [
+        "225",
+        0
+      ],
+      "control_net": [
+        "196",
+        0
+      ],
+      "image": [
+        "197",
+        0
+      ]
+    },
+    "class_type": "ControlNetApplyAdvanced",
+    "_meta": {
+      "title": "Apply ControlNet (Advanced)"
+    }
+  },
+  "229": {
     "inputs": {
       "images": [
-        "188",
+        "227",
         0
       ]
     },
     "class_type": "PreviewImage",
     "_meta": {
-      "title": "image(NDI)"
-    }
-  },
-  "193": {
-    "inputs": {
-      "width": 480,
-      "height": 720,
-      "batch_size": 1
-    },
-    "class_type": "EmptyLatentImage",
-    "_meta": {
-      "title": "Empty Latent Image(NDI)"
+      "title": "Preview Image"
     }
   }
 }

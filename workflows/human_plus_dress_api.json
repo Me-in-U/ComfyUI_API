@@ -5,10 +5,10 @@
         "129",
         0
       ],
-      "steps": 80,
-      "cfg": 4,
+      "steps": 25,
+      "cfg": 7.0200000000000005,
       "sampler_name": "dpmpp_2m",
-      "scheduler": "normal",
+      "scheduler": "karras",
       "denoise": 1,
       "model": [
         "16",
@@ -34,7 +34,7 @@
   },
   "9": {
     "inputs": {
-      "ckpt_name": "v1-5-pruned.safetensors"
+      "ckpt_name": "beautifulRealistic_brav5.safetensors"
     },
     "class_type": "CheckpointLoaderSimple",
     "_meta": {
@@ -43,7 +43,7 @@
   },
   "11": {
     "inputs": {
-      "text": "full body of a woman,elegant floor-length skirt, bride, full body portrait, wedding dress, white clothes, (1 girl:1.5), beautiful and pretty girl, smile, (beautiful wedding dress:1.2), (luxury wedding dress:1.2), (standing:1.2),(empty background: 1.2), (Slim body: 1.2), (Narrow waist: 1.2), (Slim calf: 1.2), (Tall: 1.2), best quality, best shadow, masterpiece, realistic, photo-realistic, realism, finely detail, Super Resolution, super detail, ultra-detailed, ultra high res, RAW photo, detailed cafe, perfect fingers",
+      "text": "(white dress:1.4), (luxury wedding dress:1.3), bride,long dress,elegant floor-length skirt,(korean1.2), Best Quality, (Masterpiece:1.4), (Realism:1.2), (Realisitc:1.2), 4K,(photorealistic:1.3), Detailed, 1 girl, beautiful and pretty girl, (black background: 1.3), photo-realistic, realism, finely detail, Super Resolution, super detail, ultra-detailed, ultra high res, RAW photo, detailed cafe, perfect fingers, beautiful face, beautiful detailed eyes, symmetric eyes",
       "clip": [
         "16",
         1
@@ -56,7 +56,7 @@
   },
   "12": {
     "inputs": {
-      "text": "2d art, 3d art, ((illustration)), anime, cartoon, bad_pictures, bad-artist, EasyNegative,(worst quality:1.6), (low quality:1.6), (normal quality:1.6), lowres, bad anatomy, bad hands, vaginas in breasts, ((monochrome)), ((grayscale)), collapsed eyeshadow, multiple eyebrow, (cropped), oversaturated, extra limb, missing limbs, deformed hands, long neck, long body, imperfect, (bad hands), signature, watermark, username, artist name, conjoined fingers, deformed fingers, ugly eyes, imperfect eyes, skewed eyes, unnatural face, unnatural body, error, bad image, bad photo",
+      "text": "(black clothes:1.5), (black dress:1.5), (black accessories), text, paintings,sketches,worst quality,low quality,easynegative,lowres,bad hands,bad anatomy,poorly drawn hands,poorly drawn face, extra digit,fewer digits,signature,blurry, bad feet, fused girls, username,duplicate,morbid,mutilated, mutated hands,mutation, deformed, bad proportions, malformed limbs, extra limbs, disfigured, gross proportions,disfigured, bad art, deformed,plump, bad anatomy, error, watermark,long neck, long torso, bad feet, pubic hair, extra digit bad legs,missing legs,missing arms, bad anatomy, wrong finger,missing fingers,big breasts,huge breasts,large breasts,bad hands, extra arms,extra hands,ugly face,cloned face, deformed face,malformed face, extra head,badhandv4,multiple view, multiple views,bad_pictures,logo,",
       "clip": [
         "16",
         1
@@ -430,6 +430,7 @@
       "resolution": 512,
       "bbox_detector": "yolox_l.onnx",
       "pose_estimator": "dw-ll_ucoco_384_bs5.torchscript.pt",
+      "scale_stick_for_xinsr_cn": "disable",
       "image": [
         "117",
         0
@@ -456,7 +457,7 @@
   },
   "129": {
     "inputs": {
-      "seed": 108882823954071
+      "seed": 504902085440580
     },
     "class_type": "Seed (rgthree)",
     "_meta": {
