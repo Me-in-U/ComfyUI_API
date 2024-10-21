@@ -11,11 +11,11 @@
   "2": {
     "inputs": {
       "auto_mask_category": "dresses",
-      "prompt": "bride, (luxury wedding dress:1.3), elegant floor-length skirt,  full body portrait, wedding dress, (beautiful wedding dress:1.2), best quality, best shadow, masterpiece, realistic, photo-realistic, realism, finely detail, Super Resolution, super detail, ultra-detailed, ultra high res",
+      "prompt": "floor-length skirt, wedding dress, long dress, bride dress, feet length dress",
       "fit_human_image_size": false,
       "fix_origin_merge": false,
       "denoise_steps": 30,
-      "seed": 799831636,
+      "seed": 637089671,
       "pipeline": [
         "1",
         0
@@ -55,7 +55,7 @@
   },
   "4": {
     "inputs": {
-      "image": "happy-woman-in-a-casual-shirt-full-body.jpg",
+      "image": "depositphotos_162960158-stock-photo-full-body-portrait-of-young.jpg",
       "upload": "image"
     },
     "class_type": "LoadImage",
@@ -82,7 +82,7 @@
   },
   "195": {
     "inputs": {
-      "image": "1553336191477.jpg",
+      "image": "wedding_dress_13.jpg",
       "upload": "image"
     },
     "class_type": "LoadImage",
@@ -90,16 +90,52 @@
       "title": "clothes_image"
     }
   },
-  "197": {
+  "200": {
+    "inputs": {
+      "width": [
+        "202",
+        0
+      ],
+      "height": [
+        "202",
+        1
+      ],
+      "interpolation": "nearest",
+      "method": "stretch",
+      "condition": "always",
+      "multiple_of": 0,
+      "image": [
+        "2",
+        0
+      ]
+    },
+    "class_type": "ImageResize+",
+    "_meta": {
+      "title": "🔧 Image Resize"
+    }
+  },
+  "201": {
     "inputs": {
       "images": [
-        "2",
+        "200",
         0
       ]
     },
     "class_type": "PreviewImage",
     "_meta": {
       "title": "result"
+    }
+  },
+  "202": {
+    "inputs": {
+      "image": [
+        "4",
+        0
+      ]
+    },
+    "class_type": "GetImageSize+",
+    "_meta": {
+      "title": "🔧 Get Image Size"
     }
   }
 }
