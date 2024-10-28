@@ -2,6 +2,7 @@ from api.api_helpers import generate_image_by_prompt
 from utils.helpers.randomize_seed import generate_random_15_digit_number
 from api.open_websocket import open_websocket_connection
 import json
+import shutil
 
 
 def new_dress(workflow, positive_prompt, negative_prompt, save_previews=False):
@@ -26,8 +27,19 @@ def new_dress(workflow, positive_prompt, negative_prompt, save_previews=False):
     generate_image_by_prompt(
         prompt, './output/', save_previews)
 
+    return_image_path = read_image_paths_from_temp_file()
+
+    # 이미지를 다른 디렉토리에 복사
+    destination_directory = "E:\\Languages\\Apache24\\ComfyUI_API\\output\\ND\\"  # 목적지 폴더 경로
+    for path in return_image_path:
+        try:
+            shutil.copy(path, destination_directory)
+            print(f"File {path} copied to {destination_directory}")
+        except Exception as e:
+            print(f"Error copying {path}: {str(e)}")
+
     # tempImage.txt 파일에서 이미지 경로 읽기
-    return read_image_paths_from_temp_file()
+    return return_image_path
 
 
 def read_image_paths_from_temp_file():

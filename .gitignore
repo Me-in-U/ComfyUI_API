@@ -1,1 +1,10 @@
 *.pyc
+*.npy
+*.png
+*.jpg
+/app/__pycache__
+/api/__pycache__
+/similarity/__pycache__
+/utils/actions/__pycache__
+/utils/helpers/__pycache__
+*.pyc

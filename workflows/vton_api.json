@@ -114,18 +114,6 @@
       "title": "🔧 Image Resize"
     }
   },
-  "201": {
-    "inputs": {
-      "images": [
-        "200",
-        0
-      ]
-    },
-    "class_type": "PreviewImage",
-    "_meta": {
-      "title": "result"
-    }
-  },
   "202": {
     "inputs": {
       "image": [
@@ -136,6 +124,19 @@
     "class_type": "GetImageSize+",
     "_meta": {
       "title": "🔧 Get Image Size"
+    }
+  },
+  "204": {
+    "inputs": {
+      "filename_prefix": "VTON",
+      "images": [
+        "200",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "result"
     }
   }
 }

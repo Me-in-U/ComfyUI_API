@@ -552,18 +552,6 @@
       "title": "VAE Decode"
     }
   },
-  "157": {
-    "inputs": {
-      "images": [
-        "156",
-        0
-      ]
-    },
-    "class_type": "PreviewImage",
-    "_meta": {
-      "title": "Preview Image"
-    }
-  },
   "158": {
     "inputs": {
       "expand": -1,
@@ -576,6 +564,19 @@
     "class_type": "GrowMask",
     "_meta": {
       "title": "GrowMask -1"
+    }
+  },
+  "159": {
+    "inputs": {
+      "filename_prefix": "HPD",
+      "images": [
+        "156",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
     }
   }
 }
