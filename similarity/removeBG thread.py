@@ -1,8 +1,13 @@
+import io
 import os
 import threading
-from rembg import remove
 from PIL import Image
-import io
+from rembg import remove
+
+
+BASE_DIRECTORY = "E:\\Languages\\Apache24\\ComfyUI_API\\output"
+INPUT_DIRECTORY = os.path.join(BASE_DIRECTORY, "ND")
+OUTPUT_DIRECTORY = os.path.join(BASE_DIRECTORY, "NDRBG")
 
 
 def remove_background(input_path, output_path):
@@ -11,12 +16,17 @@ def remove_background(input_path, output_path):
         with open(input_path, 'rb') as file:
             input_image = file.read()
 
+        # 배경 제거
         output_image_data = remove(input_image)
+
+        # 결과 데이터를 PIL 이미지 객체로 변환
         output_image = Image.open(io.BytesIO(output_image_data))
 
+        # 결과 이미지가 RGBA인 경우 RGB로 변환
         if output_image.mode == 'RGBA':
             output_image = output_image.convert('RGB')
 
+        # 결과 이미지 저장
         output_image.save(output_path)
         print(f"Processed and saved {output_path}")
     except Exception as e:
@@ -35,17 +45,16 @@ def process_image(filename, input_directory, output_directory):
 
 
 def main():
-    input_directory = "E:\\Languages\\Apache24\\ComfyUI_API\\output\\ND"
-    output_directory = "E:\\Languages\\Apache24\\ComfyUI_API\\output\\NDRBG"
-
-    if not os.path.exists(output_directory):
-        os.makedirs(output_directory)
+    if not os.path.exists(INPUT_DIRECTORY):
+        os.makedirs(INPUT_DIRECTORY)
+    if not os.path.exists(OUTPUT_DIRECTORY):
+        os.makedirs(OUTPUT_DIRECTORY)
 
     threads = []
-    for filename in os.listdir(input_directory):
+    for filename in os.listdir(INPUT_DIRECTORY):
         if filename.lower().endswith(('.png', '.jpg', '.jpeg')):
             thread = threading.Thread(target=process_image, args=(
-                filename, input_directory, output_directory))
+                filename, INPUT_DIRECTORY, OUTPUT_DIRECTORY))
             threads.append(thread)
             thread.start()
 

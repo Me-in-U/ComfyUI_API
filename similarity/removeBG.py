@@ -1,7 +1,13 @@
-import os
-from rembg import remove
-from PIL import Image
 import io
+import os
+from PIL import Image
+from rembg import remove
+
+
+# 이미지가 저장된 폴더 경로 및 결과 저장 폴더 설정
+BASE_DIRECTORY = "E:\\Languages\\Apache24\\ComfyUI_API\\output"
+INPUT_DIRECTORY = os.path.join(BASE_DIRECTORY, "ND")
+OUTPUT_DIRECTORY = os.path.join(BASE_DIRECTORY, "NDRBG")
 
 
 def remove_background(input_path, output_path):
@@ -30,19 +36,17 @@ def remove_background(input_path, output_path):
     return output_path
 
 
-# 이미지가 저장된 폴더 경로 및 결과 저장 폴더 설정
-input_directory = "E:\\Languages\\Apache24\\ComfyUI_API\\output\\ND"
-output_directory = "E:\\Languages\\Apache24\\ComfyUI_API\\output\\NDRBG"
-
 # 결과 저장 폴더 생성
-if not os.path.exists(output_directory):
-    os.makedirs(output_directory)
+if not os.path.exists(INPUT_DIRECTORY):
+    os.makedirs(INPUT_DIRECTORY)
+if not os.path.exists(OUTPUT_DIRECTORY):
+    os.makedirs(OUTPUT_DIRECTORY)
 
 # 폴더 내 모든 파일 처리
-for filename in os.listdir(input_directory):
+for filename in os.listdir(INPUT_DIRECTORY):
     if filename.lower().endswith(('.png', '.jpg', '.jpeg')):
-        input_path = os.path.join(input_directory, filename)
-        output_path = os.path.join(output_directory, filename)
+        input_path = os.path.join(INPUT_DIRECTORY, filename)
+        output_path = os.path.join(OUTPUT_DIRECTORY, filename)
 
         if os.path.exists(output_path):
             # print(f"Skipping {filename}, already processed.")

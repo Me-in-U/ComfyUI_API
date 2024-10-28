@@ -1,13 +1,22 @@
 import os
 import numpy as np
-from tensorflow.keras.applications.vgg16 import VGG16, preprocess_input
-from tensorflow.keras.preprocessing import image
-from tensorflow.keras.models import Model
 from scipy.spatial import distance
-import os
-from rembg import remove
-from PIL import Image
-from removeBG import remove_background
+from tensorflow.keras.models import Model
+from tensorflow.keras.preprocessing import image
+from tensorflow.keras.applications.vgg16 import VGG16, preprocess_input
+# from rembg import remove
+# from PIL import Image
+# from removeBG import remove_background
+
+
+INPUT_BASE_DIRECTORY = "E:\\Languages\\Apache24\\ComfyUI_API\\input"
+INPUT_RBG_DIRECTORY = os.path.join(INPUT_BASE_DIRECTORY, "inputRBG")
+INPUT_NPY_DIRECTORY = os.path.join(INPUT_BASE_DIRECTORY, "inputNPY")
+
+DATA_BASE_DIRECTORY = "E:\\Languages\\Apache24\\ComfyUI_API\\output"
+DATA_NPY_DIRECTORY = os.path.join(DATA_BASE_DIRECTORY, "NDNPY_origin")
+DATA_RBG_DIRECTORY = os.path.join(DATA_BASE_DIRECTORY, "ND")
+# DATA_RBG_DIRECTORY = os.path.join(INPUT_BASE_DIRECTORY, "NDRBG")
 
 # VGG16 모델 로드
 base_model = VGG16(weights='imagenet')
@@ -71,31 +80,26 @@ def find_similar_images(target_features, features_dict, top_n=5):
 # Paths configuration
 input_img_path = "E:\\Languages\\Apache24\\ComfyUI_API\\input\\search.pstatic.jpg"
 base_name = os.path.basename(input_img_path)
-input_rbg_directory = "E:\\Languages\\Apache24\\ComfyUI_API\\input\\inputRBG"
-input_npy_directory = "E:\\Languages\\Apache24\\ComfyUI_API\\input\\inputNPY"
-if not os.path.exists(input_rbg_directory):
-    os.makedirs(input_rbg_directory)
-if not os.path.exists(input_npy_directory):
-    os.makedirs(input_npy_directory)
+if not os.path.exists(INPUT_RBG_DIRECTORY):
+    os.makedirs(INPUT_RBG_DIRECTORY)
+if not os.path.exists(INPUT_NPY_DIRECTORY):
+    os.makedirs(INPUT_NPY_DIRECTORY)
 
 # Remove background and save
-input_rbg_path = os.path.join(input_rbg_directory, base_name)
+input_rbg_path = os.path.join(INPUT_RBG_DIRECTORY, base_name)
 # removeBG_path = remove_background(input_img_path, input_rbg_path)
 
 # Extract features and save
 input_npy_path = os.path.join(
-    input_npy_directory, f"{os.path.splitext(base_name)[0]}.npy")
+    INPUT_NPY_DIRECTORY, f"{os.path.splitext(base_name)[0]}.npy")
 # target_features = extract_and_save_features(
 #     input_rbg_path, input_npy_path, model)
 target_features = extract_and_save_features(
     input_img_path, input_npy_path, model)
 
 # Load features from directory
-# data_rbg_directory = "E:\\Languages\\Apache24\\ComfyUI_API\\output\\NDRBG"
-data_rbg_directory = "E:\\Languages\\Apache24\\ComfyUI_API\\output\\ND"
-data_npy_directory = "E:\\Languages\\Apache24\\ComfyUI_API\\output\\NDNPY_origin"
 features_dict = extract_features_from_directory(
-    data_rbg_directory, data_npy_directory, model)
+    DATA_RBG_DIRECTORY, DATA_NPY_DIRECTORY, model)
 
 # Find similar images
 similar_images = find_similar_images(target_features, features_dict)

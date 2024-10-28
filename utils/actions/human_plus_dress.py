@@ -1,6 +1,6 @@
 from api.api_helpers import generate_image_by_prompt_and_image
 from utils.helpers.randomize_seed import generate_random_15_digit_number
-from api.open_websocket import open_websocket_connection
+from utils.actions.getImagePath import read_image_paths_from_temp_file
 import json
 
 
@@ -12,6 +12,7 @@ def human_plus_dress(workflow, input_path, positive_prompt, negative_prompt, sav
     ) if value['class_type'] == 'CLIPTextEncode' and value['_meta']['title'] == 'Positive Prompt(SB)'][0]
     prompt[positive_prompt_id]['inputs']['text'] = positive_prompt
 
+    # Negative Prompt 변경
     negative_prompt_id = [key for key, value in prompt.items(
     ) if value['class_type'] == 'CLIPTextEncode' and value['_meta']['title'] == 'Negative Prompt(SB)'][0]
     prompt[negative_prompt_id]['inputs']['text'] = negative_prompt
@@ -21,7 +22,7 @@ def human_plus_dress(workflow, input_path, positive_prompt, negative_prompt, sav
     ) if value['class_type'] == 'KSampler' and value['_meta']['title'] == 'KSampler(SB)'][0]
     prompt[k_sampler_id]['inputs']['seed'] = generate_random_15_digit_number()
 
-    # input_img1 이미지 path 변경
+    # human_image(SB) 이미지 path 변경
     image_loader = [key for key, value in prompt.items(
     ) if value['class_type'] == 'LoadImage' and value['_meta']['title'] == 'human_image(SB)'][0]
     prompt[image_loader]['inputs']['image'] = input_path
@@ -34,14 +35,3 @@ def human_plus_dress(workflow, input_path, positive_prompt, negative_prompt, sav
 
     # tempImage.txt 파일에서 이미지 경로 읽기
     return read_image_paths_from_temp_file()
-
-
-def read_image_paths_from_temp_file():
-    image_paths = []
-    try:
-        with open('tempImage.txt', 'r') as file:
-            image_paths = file.readlines()
-        image_paths = [path.strip() for path in image_paths]  # 공백 및 개행 제거
-    except FileNotFoundError:
-        print("tempImage.txt file not found.")
-    return image_paths

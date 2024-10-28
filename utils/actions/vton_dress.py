@@ -1,6 +1,6 @@
 from api.api_helpers import generate_image_by_image_image
 from utils.helpers.randomize_seed import generate_random_int
-from api.open_websocket import open_websocket_connection
+from utils.actions.getImagePath import read_image_paths_from_temp_file
 import json
 
 
@@ -12,11 +12,12 @@ def vton_dress(workflow, input_path1, input_path2, save_previews=False):
     ) if value['class_type'] == 'IDM_VTON_NN' and value['_meta']['title'] == 'IDM-VTON (diffusers)'][0]
     prompt[k_sampler_id]['inputs']['seed'] = generate_random_int()
 
-    # input_img 이미지 path 변경
+    # human_image 이미지 path 변경
     image_loader1 = [key for key, value in prompt.items(
     ) if value['class_type'] == 'LoadImage' and value['_meta']['title'] == 'human_image'][0]
     prompt[image_loader1]['inputs']['image'] = input_path1
 
+    # clothes_image 이미지 path 변경
     image_loader2 = [key for key, value in prompt.items(
     ) if value['class_type'] == 'LoadImage' and value['_meta']['title'] == 'clothes_image'][0]
     prompt[image_loader2]['inputs']['image'] = input_path2
@@ -30,14 +31,3 @@ def vton_dress(workflow, input_path1, input_path2, save_previews=False):
 
     # tempImage.txt 파일에서 이미지 경로 읽기
     return read_image_paths_from_temp_file()
-
-
-def read_image_paths_from_temp_file():
-    image_paths = []
-    try:
-        with open('tempImage.txt', 'r') as file:
-            image_paths = file.readlines()
-        image_paths = [path.strip() for path in image_paths]  # 공백 및 개행 제거
-    except FileNotFoundError:
-        print("tempImage.txt file not found.")
-    return image_paths

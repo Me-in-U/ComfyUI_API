@@ -1,7 +1,6 @@
-from io import BytesIO
 import json
-import urllib.request
 import urllib.parse
+import urllib.request
 
 from PIL import Image
 from requests_toolbelt import MultipartEncoder

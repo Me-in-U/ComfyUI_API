@@ -1,14 +1,15 @@
-import json
-from PIL import Image
 import io
 import os
+import json
+from PIL import Image
 
 # Assuming the import paths are correct and the methods are defined elsewhere:
-from api.websocket_api import queue_prompt, get_history, get_image, upload_image
 from api.open_websocket import open_websocket_connection
+from api.websocket_api import queue_prompt, get_history, get_image, upload_image
 
 
 def generate_image_by_prompt_and_image(prompt, output_path, input_path, filename, save_previews=False):
+    # * 사람 + 프롬프트 => 이미지
     try:
         ws, server_address, client_id = open_websocket_connection()
         upload_image(input_path, filename, server_address)
@@ -22,6 +23,7 @@ def generate_image_by_prompt_and_image(prompt, output_path, input_path, filename
 
 
 def generate_image_by_prompt(prompt, output_path, save_previews=False):
+    # * 프롬프트 => 이미지
     try:
         ws, server_address, client_id = open_websocket_connection()
         prompt_id = queue_prompt(prompt, client_id, server_address)[
@@ -34,6 +36,7 @@ def generate_image_by_prompt(prompt, output_path, save_previews=False):
 
 
 def generate_image_by_image_image(prompt, output_path, input_path1, filename1, input_path2, filename2, save_previews=False):
+    # * 사람 + 옷 => 이미지
     try:
         ws, server_address, client_id = open_websocket_connection()
         upload_image(input_path1, filename1, server_address)
