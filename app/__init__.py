@@ -25,6 +25,7 @@ SUCCESS_MESSAGE = "Image processed successfully"
 
 @app.route('/')
 def main():
+    # comfyUI 켜야함
     _, server_address, _ = open_websocket_connection()
     clear_comfy_cache(server_address=server_address,
                       unload_models=True, free_memory=True)

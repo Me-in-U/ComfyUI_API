@@ -5,8 +5,17 @@
     <title>프린세스 메이커</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}" />
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.141.0/build/three.module.js",
+          "GLTFLoader": "https://unpkg.com/three@0.141.0/examples/jsm/loaders/GLTFLoader.js"
+        }
+      }
+    </script>
   </head>
   <body>
+    <!-- WebGL 렌더링 컨테이너 추가 -->
     <div class="container">
       <h1>스테이블 디퓨젼 드레스 생성</h1>
       <!-- 옵션 선택 -->
@@ -70,7 +79,9 @@
         <p>memo : 기본 프롬프트 사용을 누르는걸 추천</p>
         <p>사진은 서버에 저장됩니다.</p>
       </div>
+      <div id="three-container"></div>
     </div>
-    <script src="{{ url_for('static', filename='js/script-241015094100.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/script-241101191300.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/load_three_gltf.js') }}"></script>
   </body>
 </html>

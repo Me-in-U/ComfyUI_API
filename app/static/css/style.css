@@ -195,3 +195,9 @@ img {
     transform: rotate(360deg);
   }
 }
+
+#three-container {
+  width: 100%; /* 컨테이너 가로 폭의 100% */
+  height: auto;
+  background: #000; /* 배경색 검정으로 설정하여 확인 용이 */
+}
