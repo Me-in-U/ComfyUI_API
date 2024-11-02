@@ -128,7 +128,7 @@ textarea {
 }
 
 /* 생성 버튼 */
-#createBtn {
+.submitBtn {
   width: 100%;
   margin-bottom: 20px;
   padding: 10px 20px;
@@ -140,7 +140,7 @@ textarea {
   display: block;
 }
 
-#createBtn:hover {
+.submitBtn:hover {
   background-color: #0056b3;
 }
 

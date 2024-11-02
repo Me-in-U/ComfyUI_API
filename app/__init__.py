@@ -9,6 +9,8 @@ from utils.actions.new_dress import new_dress
 from utils.actions.vton_dress import vton_dress
 from utils.actions.load_workflow import load_workflow
 from utils.actions.human_plus_dress import human_plus_dress
+# from similarity.getSimilarity import return_images
+
 
 app = Flask(__name__)
 
@@ -144,6 +146,32 @@ def img_vton_dress():
     except Exception as e:
         print(f"Flask An error occurred: {e}")
         return jsonify({"error": str(e)}), 500
+
+
+# @app.route('/get_similar_dresses', methods=['POST'])
+# def get_similar_dresses():
+#     try:
+#         image_file = request.files['image']
+#         similar_images = return_images(
+#             image_file, top_n=1)  # 상위 1개 이미지만 반환
+
+#         # 유사한 이미지의 경로를 가져와 base64로 인코딩
+#         if similar_images:
+#             top_image_path = similar_images[0][0]
+#             with open(top_image_path, "rb") as image_file:
+#                 encoded_string = base64.b64encode(
+#                     image_file.read()).decode('utf-8')
+#             return jsonify({"image": encoded_string})
+#         else:
+#             return jsonify({"error": "No similar images found"}), 404
+
+#     except Exception as e:
+#         print(f"Flask An error occurred: {e}")
+#         return jsonify({"error": str(e)}), 500
+
+@app.route('/1557')
+def gg():
+    return render_template("faker.html")
 
 
 if __name__ == "__main__":

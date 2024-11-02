@@ -5,14 +5,14 @@
     <title>프린세스 메이커</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}" />
-    <script type="importmap">
+    <!-- <script type="importmap">
       {
         "imports": {
           "three": "https://cdn.jsdelivr.net/npm/three@0.141.0/build/three.module.js",
           "GLTFLoader": "https://unpkg.com/three@0.141.0/examples/jsm/loaders/GLTFLoader.js"
         }
       }
-    </script>
+    </script> -->
   </head>
   <body>
     <!-- WebGL 렌더링 컨테이너 추가 -->
@@ -26,7 +26,7 @@
         <option value="vton_dress">VTON 생성</option>
       </select>
       <!-- 폼 -->
-      <form id="uploadForm">
+      <form id="createImageForm">
         <br />
         <!-- 이미지 선택 -->
         <div class="animated" id="select-image-container1">
@@ -62,26 +62,29 @@
             기본 프롬프트 사용
           </label>
         </div>
-        <button id="createBtn" type="submit">이미지 생성 시작</button>
+        <button class="submitBtn" id="createBtn" type="submit">이미지 생성 시작</button>
       </form>
       <!-- 결과창 -->
       <div id="loading" style="display: none">
         <div id="spinner"></div>
         <div id="loadingText">로딩중</div>
       </div>
-      <div class="images-container">
-        <div id="original_image"></div>
-        <div id="clothes_image" style="display: none"></div>
-        <div id="result_image"></div>
-      </div>
+      <form id="showSimilarForm">
+        <div class="images-container">
+          <div id="original_image"></div>
+          <div id="clothes_image" style="display: none"></div>
+          <div id="result_image"></div>
+        </div>
+        <button class="submitBtn" id="getSimilarBtn" type="submit" style="display: none">비슷한 이미지 찾기</button>
+      </form>
       <!-- 메모 -->
       <div>
         <p>memo : 기본 프롬프트 사용을 누르는걸 추천</p>
         <p>사진은 서버에 저장됩니다.</p>
       </div>
-      <div id="three-container"></div>
+      <!-- <div id="three-container"></div> -->
     </div>
     <script src="{{ url_for('static', filename='js/script-241101191300.js') }}"></script>
-    <script type="module" src="{{ url_for('static', filename='js/load_three_gltf.js') }}"></script>
+    <!-- <script type="module" src="{{ url_for('static', filename='js/load_three_gltf.js') }}"></script> -->
   </body>
 </html>

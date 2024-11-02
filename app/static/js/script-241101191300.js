@@ -1,7 +1,7 @@
 let loadingInterval = null;
 
-//* uploadForm submit*//
-document.getElementById("uploadForm").addEventListener("submit", function (e) {
+//* createImageForm submit*//
+document.getElementById("createImageForm").addEventListener("submit", function (e) {
   e.preventDefault();
 
   const optionValue = document.getElementById("optionSelect").value;
@@ -112,6 +112,12 @@ function handleResponse(data) {
   } else {
     const base64Image = `data:image/jpeg;base64,${data.results[0]}`;
     document.getElementById("result_image").innerHTML = `<img src="${base64Image}" alt="Processed Image"/>`;
+    const optionValue = document.getElementById("optionSelect").value;
+    if (optionValue === "prompt_new_dress") {
+      document.getElementById("getSimilarBtn").style.display = "block";
+    } else {
+      document.getElementById("getSimilarBtn").style.display = "none";
+    }
   }
 }
 
@@ -128,6 +134,39 @@ document.addEventListener("DOMContentLoaded", function () {
   setupOptionSelection();
   setupFileSelection();
   setupPromptDefaults();
+});
+
+//* showSimilarForm submit*//
+document.getElementById("showSimilarForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+  const formData = new FormData();
+  const resultImage = document.getElementById("result_image");
+  formData.append("image", resultImage.src);
+  const apiUrl = "http://real.pinkbean.co.kr:1557/get_similar_dresses";
+  loadingInterval = startLoadingAnimation();
+  fetch(apiUrl, {
+    method: "POST",
+    body: formData,
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      clearInterval(loadingInterval);
+      document.getElementById("loading").style.display = "none";
+      if (data.error) {
+        document.getElementById("result_image").innerHTML = "오류가 발생했습니다: " + data.error;
+      } else {
+        const base64Image = `data:image/jpeg;base64,${data.results[0]}`;
+        document.getElementById("original_image").innerHTML = `<img src="${base64Image}" alt="Processed Image"/>`;
+      }
+    })
+    .catch((error) => {
+      handleError(error);
+    });
 });
 
 //! optionSelect
@@ -244,16 +283,16 @@ function getDefaultPromptValue2(promptId) {
   return prompts[promptId];
 }
 
-function adjustAspectRatio() {
-  const container = document.querySelector(".container"); // 상위 컨테이너 선택
-  if (container) {
-    const containerWidth = container.clientWidth; // 컨테이너의 현재 너비 가져오기
-    const aspectHeight = (containerWidth * 9) / 16; // 16:9 비율로 높이 계산
-    const threeContainer = document.getElementById("three-container");
-    threeContainer.style.height = `${aspectHeight}px`; // 계산된 높이를 적용
-  }
-}
+// function adjustAspectRatio() {
+//   const container = document.querySelector(".container"); // 상위 컨테이너 선택
+//   if (container) {
+//     const containerWidth = container.clientWidth; // 컨테이너의 현재 너비 가져오기
+//     const aspectHeight = (containerWidth * 9) / 16; // 16:9 비율로 높이 계산
+//     const threeContainer = document.getElementById("three-container");
+//     threeContainer.style.height = `${aspectHeight}px`; // 계산된 높이를 적용
+//   }
+// }
 
 // 페이지 로드 시 및 창 크기 변경 시에 함수 실행
-window.addEventListener("load", adjustAspectRatio);
-window.addEventListener("resize", adjustAspectRatio);
+// window.addEventListener("load", adjustAspectRatio);
+// window.addEventListener("resize", adjustAspectRatio);

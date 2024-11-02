@@ -1,13 +1,18 @@
+from keras.applications.vgg16 import VGG16, preprocess_input
+from keras.preprocessing import image
+from keras.models import Model
 import os
+import io
 import numpy as np
+from PIL import Image
 from scipy.spatial import distance
-from tensorflow.keras.models import Model
-from tensorflow.keras.preprocessing import image
-from tensorflow.keras.applications.vgg16 import VGG16, preprocess_input
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1'
+# from tensorflow.keras.applications.vgg16 import VGG16, preprocess_input
+# from tensorflow.keras.preprocessing import image
+# from tensorflow.keras.models import Model
 # from rembg import remove
 # from PIL import Image
 # from removeBG import remove_background
-
 
 INPUT_BASE_DIRECTORY = "E:\\Languages\\Apache24\\ComfyUI_API\\input"
 INPUT_RBG_DIRECTORY = os.path.join(INPUT_BASE_DIRECTORY, "inputRBG")
@@ -77,7 +82,29 @@ def find_similar_images(target_features, features_dict, top_n=5):
     return sorted_similarities[:top_n]
 
 
-# Paths configuration
+def return_images(image_file, top_n):
+    base_model = VGG16(weights='imagenet')
+    model = Model(inputs=base_model.input,
+                  outputs=base_model.get_layer('fc2').output)
+
+    img = Image.open(io.BytesIO(image_file))
+    # 이미지 처리 및 유사한 이미지 찾기
+    img.save("temp_image.jpg")  # PIL 객체를 일시적으로 저장
+    temp_features = extract_and_save_features(
+        "temp_image.jpg", "temp_image.npy", model)
+    features_dict = extract_features_from_directory(
+        DATA_RBG_DIRECTORY, DATA_NPY_DIRECTORY, model)
+
+    similarities = {}
+    for path, features in features_dict.items():
+        if path.lower().endswith(('.png', '.jpg', '.jpeg')):  # 다시 한번 이미지 파일만 처리
+            sim = 1 - distance.cosine(temp_features, features)
+            similarities[path] = sim
+    sorted_similarities = sorted(
+        similarities.items(), key=lambda x: x[1], reverse=True)
+    return sorted_similarities[:top_n]
+
+    # Paths configuration
 input_img_path = "E:\\Languages\\Apache24\\ComfyUI_API\\input\\search.pstatic.jpg"
 base_name = os.path.basename(input_img_path)
 if not os.path.exists(INPUT_RBG_DIRECTORY):
