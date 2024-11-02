@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/faker.css') }}" />
+    <title>대상혁</title>
+  </head>
+  <body>
+    <img class="expand-img" src="{{ url_for('static', filename='image/faker.png') }}" alt="faker" />
+    <img class="center-img" src="{{ url_for('static', filename='image/faker.png') }}" alt="faker" />
+    <div class="center-text">
+      <h1 data-text="증명하세요">증명하세요</h1>
+    </div>
+    <script src="{{ url_for('static', filename='js/faker.js') }}"></script>
+  </body>
+</html>
