@@ -1,5 +1,7 @@
 function glitch(element) {
   let count = 0;
+  let interval1 = 15;
+  let interval2 = 30;
   setInterval(() => {
     // element
     const skew = Math.random() * 20 - 10;
@@ -19,12 +21,14 @@ function glitch(element) {
 
     count++;
 
-    if (count % 15 === 0) {
+    if (count % interval1 === 0) {
+      interval1 = 10 + Math.floor(Math.random() * 11);
       const bigSkew = Math.random() * 180 - 90;
       element.style.setProperty("--skew", `${bigSkew}deg`);
     }
 
-    if (count % 30 === 0) {
+    if (count % interval2 === 0) {
+      interval2 = 20 + Math.floor(Math.random() * 11);
       const bigScale = 1 + Math.random() / 2;
       element.style.setProperty("--scale", `${bigScale}`);
     }
