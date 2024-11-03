@@ -145,7 +145,7 @@ document.getElementById("showSimilarForm").addEventListener("submit", function (
   const imageData = resultImage.src; // base64 인코딩된 이미지 데이터를 추출
   formData.append("imageData", imageData);
 
-  const apiUrl = "http://real.pinkbean.co.kr:1558/get_similar_dresses";
+  const apiUrl = "http://real.pinkbean.co.kr:1557/get_similar_dresses";
   loadingInterval = startLoadingAnimation();
   fetch(apiUrl, {
     method: "POST",

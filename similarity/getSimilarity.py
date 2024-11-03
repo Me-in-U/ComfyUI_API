@@ -2,24 +2,16 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.applications.vgg16 import VGG16, preprocess_input
 from tensorflow.keras.preprocessing import image
 import os
-import io
 import numpy as np
 from PIL import Image
 from scipy.spatial import distance
 # os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1'
 import base64
 import tempfile
-from flask_cors import CORS
-from flask import Flask, request, jsonify, render_template
-
-INPUT_BASE_DIRECTORY = "E:\\Languages\\Apache24\\ComfyUI_API\\input"
-INPUT_NPY_DIRECTORY = os.path.join(INPUT_BASE_DIRECTORY, "inputNPY")
 
 DATA_BASE_DIRECTORY = "E:\\Languages\\Apache24\\ComfyUI_API\\output"
 DATA_ND_DIRECTORY = os.path.join(DATA_BASE_DIRECTORY, "ND")
 DATA_NPY_DIRECTORY = os.path.join(DATA_BASE_DIRECTORY, "NDNPY")
-
-SUCCESS_MESSAGE = "Image processed successfully"
 
 
 # 이미지를 Base64로 인코딩하는 함수
@@ -106,80 +98,32 @@ def return_images(image_bytes, top_n):
     return similar_images
 
 
-def test_code():
-    # 모델 로드
-    base_model = VGG16(weights='imagenet')
-    model = Model(inputs=base_model.input,
-                  outputs=base_model.get_layer('fc2').output)
+# def test_code():
+#     INPUT_BASE_DIRECTORY = "E:\\Languages\\Apache24\\ComfyUI_API\\similarity"
+#     # 모델 로드
+#     base_model = VGG16(weights='imagenet')
+#     model = Model(inputs=base_model.input,
+#                   outputs=base_model.get_layer('fc2').output)
 
-    # 입력 이미지
-    input_img_path = "E:\\Languages\\Apache24\\ComfyUI_API\\input\\search.pstatic.jpg"
-    base_name = os.path.basename(input_img_path)
-    if not os.path.exists(INPUT_NPY_DIRECTORY):
-        os.makedirs(INPUT_NPY_DIRECTORY)
+#     # 입력 이미지
+#     input_img_path = "E:\\Languages\\Apache24\\ComfyUI_API\\similarity\\test_image.jpg"
+#     base_name = os.path.basename(input_img_path)
 
-    # 입력 이미지의 features 만들기
-    input_npy_path = os.path.join(
-        INPUT_NPY_DIRECTORY, f"{os.path.splitext(base_name)[0]}.npy")
-    target_features = extract_and_save_features(
-        input_img_path, input_npy_path, model)
+#     # 입력 이미지의 features 만들기
+#     input_npy_path = os.path.join(
+#         INPUT_BASE_DIRECTORY, f"{os.path.splitext(base_name)[0]}.npy")
+#     target_features = extract_and_save_features(
+#         input_img_path, input_npy_path, model)
 
-    # 데이터셋에서 features 딕셔너리 만들기
-    features_dict = dataset_features_to_dictionary(
-        DATA_ND_DIRECTORY, DATA_NPY_DIRECTORY, model)
+#     # 데이터셋에서 features 딕셔너리 만들기
+#     features_dict = dataset_features_to_dictionary(
+#         DATA_ND_DIRECTORY, DATA_NPY_DIRECTORY, model)
 
-    # 유사 이미지 찾기
-    similar_images = find_similar_images(target_features, features_dict)
+#     # 유사 이미지 찾기
+#     similar_images = find_similar_images(target_features, features_dict)
 
-    for img, sim in similar_images:
-        print(f"{img}: 유사도 = {sim}")
-
-
-app = Flask(__name__)
-app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # 50MB
-CORS(app)
+#     for img, sim in similar_images:
+#         print(f"{img}: 유사도 = {sim}")
 
 
-@app.route('/get_similar_dresses', methods=['POST'])
-def get_similar_dresses():
-    try:
-        # 요청 본문의 크기를 로그로 출력
-        content_length = request.content_length
-        print(f"try Request content length: {content_length} bytes")
-        print(request.form)
-        image_data = request.form['imageData']
-        if image_data.startswith('data:image/jpeg;base64,'):
-            image_data = image_data.split('data:image/jpeg;base64,')[1]
-        else:
-            return jsonify({"error": "Invalid image format"}), 400
-
-        # base64 문자열을 이미지로 변환
-        image_bytes = base64.b64decode(image_data)
-
-        similar_images = return_images(
-            image_bytes, top_n=5)  # 상위 N개 이미지만 반환
-        print(similar_images)
-
-        # 유사한 이미지의 경로를 가져와 base64로 인코딩
-        if similar_images:
-            encoded_images = [encode_image_to_base64(
-                img_path) for img_path, _ in similar_images]  # 각 이미지 경로에 대해 base64 인코딩
-            return jsonify({"message": SUCCESS_MESSAGE, "results": encoded_images})
-        else:
-            return jsonify({"error": "No similar images found"}), 404
-
-    except Exception as e:
-        # 요청 본문의 크기를 로그로 출력
-        content_length = request.content_length
-        print(f"Exception Request content length: {content_length} bytes")
-        print(f"Flask An error occurred: {e}")
-        return jsonify({"error": str(e)}), 500
-
-
-@app.route("/")
-def main():
-    return "Connected"
-
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", debug=True, port=1558)
+# test_code()

@@ -1,26 +1,18 @@
+import time
 import os
 import base64
 import sys
 from werkzeug.utils import secure_filename
 from flask_cors import CORS
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, redirect, request, jsonify, render_template
 from api.websocket_api import clear_comfy_cache
 from api.open_websocket import open_websocket_connection
+from similarity.getSimilarity import return_images
 from utils.actions.new_dress import new_dress
 from utils.actions.vton_dress import vton_dress
 from utils.actions.load_workflow import load_workflow
 from utils.actions.human_plus_dress import human_plus_dress
-
-app = Flask(__name__)
-
-
-@app.route('/test')
-def get_path():
-    return str(sys.path)
-
-
-# CORS(app, resources={r"/*": {"origins": "http://real.pinkbean.co.kr:1557"}})
-CORS(app)
+import subprocess
 
 BASE_DIRECTORY = "E:\\Languages\\Apache24\\ComfyUI_API"
 INPUT_DIRECTORY = os.path.join(BASE_DIRECTORY, "input")
@@ -28,8 +20,32 @@ OUTPUT_DIRECTORY = os.path.join(BASE_DIRECTORY, "output")
 WORKFLOW_DIRECTORY = os.path.join(BASE_DIRECTORY, "workflows")
 SUCCESS_MESSAGE = "Image processed successfully"
 
+app = Flask(__name__)
+CORS(app)
+# CORS(app, resources={r"/*": {"origins": "http://real.pinkbean.co.kr:1557"}})
 
-# 이미지를 Base64로 인코딩하는 함수
+
+#! 테스트 코드------------------------------------------------
+@app.route('/test')
+def get_path():
+    return str(sys.path)
+
+# @app.before_request
+# def before_request():
+#     if request.url.startswith('http://'):
+#         url = request.url.replace('http://', 'https://', 1)
+#         code = 301
+#         return redirect(url, code=code)
+
+
+@app.route('/1557')
+def gg():
+    return render_template("faker.html")
+
+#! 테스트 코드------------------------------------------------
+
+
+#! 이미지 -> Base64로 인코딩
 def encode_image_to_base64(image_path):
     with open(image_path, "rb") as image_file:
         return base64.b64encode(image_file.read()).decode('utf-8')
@@ -38,10 +54,28 @@ def encode_image_to_base64(image_path):
 @app.route('/')
 def main():
     # comfyUI 켜야함
-    _, server_address, _ = open_websocket_connection()
-    clear_comfy_cache(server_address=server_address,
-                      unload_models=True, free_memory=True)
-    return render_template("index.html")
+    try:
+        open_websocket_connection()
+    except:
+        # .bat 파일 실행
+        os.system(
+            r'start "" "E:\\ComfyUI\\python_embeded\\python.exe" -s "E:\\ComfyUI\\ComfyUI\\main.py" --windows-standalone-build')
+
+        # 일단 실행 메시지 반환
+        return "ComfyUI가 방금 막 실행되었습니다."
+
+    # 일정 간격으로 서버가 켜졌는지 확인
+    for _ in range(10):  # 최대 10번 시도
+        try:
+            _, server_address, _ = open_websocket_connection()
+            # clear_comfy_cache(server_address=server_address,
+            #                   unload_models=True, free_memory=True)
+            return render_template("index.html")  # 서버 연결 성공 시 반환
+        except:
+            time.sleep(1)  # 1초 간격으로 재시도
+
+    # 최종 실패 시 메시지 반환
+    return "ComfyUI 실행에 실패했습니다. 다시 시도해주세요."
 
 
 @app.route('/human_plus_dress', methods=['POST'])
@@ -152,9 +186,40 @@ def img_vton_dress():
         return jsonify({"error": str(e)}), 500
 
 
-@app.route('/1557')
-def gg():
-    return render_template("faker.html")
+@app.route('/get_similar_dresses', methods=['POST'])
+def get_similar_dresses():
+    try:
+        # 요청 본문의 크기를 로그로 출력
+        content_length = request.content_length
+        print(f"try Request content length: {content_length} bytes")
+        print(request.form)
+        image_data = request.form['imageData']
+        if image_data.startswith('data:image/jpeg;base64,'):
+            image_data = image_data.split('data:image/jpeg;base64,')[1]
+        else:
+            return jsonify({"error": "Invalid image format"}), 400
+
+        # base64 문자열을 이미지로 변환
+        image_bytes = base64.b64decode(image_data)
+
+        similar_images = return_images(
+            image_bytes, top_n=5)  # 상위 N개 이미지만 반환
+        print(similar_images)
+
+        # 유사한 이미지의 경로를 가져와 base64로 인코딩
+        if similar_images:
+            encoded_images = [encode_image_to_base64(
+                img_path) for img_path, _ in similar_images]  # 각 이미지 경로에 대해 base64 인코딩
+            return jsonify({"message": SUCCESS_MESSAGE, "results": encoded_images})
+        else:
+            return jsonify({"error": "No similar images found"}), 404
+
+    except Exception as e:
+        # 요청 본문의 크기를 로그로 출력
+        content_length = request.content_length
+        print(f"Exception Request content length: {content_length} bytes")
+        print(f"Flask An error occurred: {e}")
+        return jsonify({"error": str(e)}), 500
 
 
 if __name__ == "__main__":
