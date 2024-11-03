@@ -1,5 +1,6 @@
 import os
 import base64
+import sys
 from werkzeug.utils import secure_filename
 from flask_cors import CORS
 from flask import Flask, request, jsonify, render_template
@@ -9,10 +10,13 @@ from utils.actions.new_dress import new_dress
 from utils.actions.vton_dress import vton_dress
 from utils.actions.load_workflow import load_workflow
 from utils.actions.human_plus_dress import human_plus_dress
-# from similarity.getSimilarity import return_images
-
 
 app = Flask(__name__)
+
+
+@app.route('/test')
+def get_path():
+    return str(sys.path)
 
 
 # CORS(app, resources={r"/*": {"origins": "http://real.pinkbean.co.kr:1557"}})
@@ -25,6 +29,12 @@ WORKFLOW_DIRECTORY = os.path.join(BASE_DIRECTORY, "workflows")
 SUCCESS_MESSAGE = "Image processed successfully"
 
 
+# 이미지를 Base64로 인코딩하는 함수
+def encode_image_to_base64(image_path):
+    with open(image_path, "rb") as image_file:
+        return base64.b64encode(image_file.read()).decode('utf-8')
+
+
 @app.route('/')
 def main():
     # comfyUI 켜야함
@@ -32,12 +42,6 @@ def main():
     clear_comfy_cache(server_address=server_address,
                       unload_models=True, free_memory=True)
     return render_template("index.html")
-
-
-# 이미지를 Base64로 인코딩하는 함수
-def encode_image_to_base64(image_path):
-    with open(image_path, "rb") as image_file:
-        return base64.b64encode(image_file.read()).decode('utf-8')
 
 
 @app.route('/human_plus_dress', methods=['POST'])
@@ -148,31 +152,10 @@ def img_vton_dress():
         return jsonify({"error": str(e)}), 500
 
 
-# @app.route('/get_similar_dresses', methods=['POST'])
-# def get_similar_dresses():
-#     try:
-#         image_file = request.files['image']
-#         similar_images = return_images(
-#             image_file, top_n=1)  # 상위 1개 이미지만 반환
-
-#         # 유사한 이미지의 경로를 가져와 base64로 인코딩
-#         if similar_images:
-#             top_image_path = similar_images[0][0]
-#             with open(top_image_path, "rb") as image_file:
-#                 encoded_string = base64.b64encode(
-#                     image_file.read()).decode('utf-8')
-#             return jsonify({"image": encoded_string})
-#         else:
-#             return jsonify({"error": "No similar images found"}), 404
-
-#     except Exception as e:
-#         print(f"Flask An error occurred: {e}")
-#         return jsonify({"error": str(e)}), 500
-
 @app.route('/1557')
 def gg():
     return render_template("faker.html")
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host="0.0.0.0", debug=True, port=1557)

@@ -8,3 +8,4 @@
 /utils/actions/__pycache__
 /utils/helpers/__pycache__
 *.pyc
+tempImage.txt

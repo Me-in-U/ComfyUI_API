@@ -127,6 +127,7 @@ function handleError(error) {
   console.error("Error:", error);
   document.getElementById("loading").style.display = "none";
   document.getElementById("result").innerHTML = "오류가 발생했습니다.";
+  alert("An error occurred: " + error.message);
 }
 
 //* DOMContentLoaded *//
@@ -140,9 +141,11 @@ document.addEventListener("DOMContentLoaded", function () {
 document.getElementById("showSimilarForm").addEventListener("submit", function (e) {
   e.preventDefault();
   const formData = new FormData();
-  const resultImage = document.getElementById("result_image");
-  formData.append("image", resultImage.src);
-  const apiUrl = "http://real.pinkbean.co.kr:1557/get_similar_dresses";
+  const resultImage = document.querySelector("#result_image img");
+  const imageData = resultImage.src; // base64 인코딩된 이미지 데이터를 추출
+  formData.append("imageData", imageData);
+
+  const apiUrl = "http://real.pinkbean.co.kr:1558/get_similar_dresses";
   loadingInterval = startLoadingAnimation();
   fetch(apiUrl, {
     method: "POST",
@@ -158,8 +161,10 @@ document.getElementById("showSimilarForm").addEventListener("submit", function (
       clearInterval(loadingInterval);
       document.getElementById("loading").style.display = "none";
       if (data.error) {
+        alert("Error: " + data.error);
         document.getElementById("result_image").innerHTML = "오류가 발생했습니다: " + data.error;
       } else {
+        console.log(data);
         const base64Image = `data:image/jpeg;base64,${data.results[0]}`;
         document.getElementById("original_image").innerHTML = `<img src="${base64Image}" alt="Processed Image"/>`;
       }
