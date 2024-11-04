@@ -5,14 +5,14 @@ import sys
 from werkzeug.utils import secure_filename
 from flask_cors import CORS
 from flask import Flask, redirect, request, jsonify, render_template
-from api.websocket_api import clear_comfy_cache
+from api.websocket_api import clear_comfy_cache, get_queue_size
 from api.open_websocket import open_websocket_connection
 from similarity.getSimilarity import return_images
 from utils.actions.new_dress import new_dress
 from utils.actions.vton_dress import vton_dress
 from utils.actions.load_workflow import load_workflow
 from utils.actions.human_plus_dress import human_plus_dress
-import subprocess
+import psutil
 
 BASE_DIRECTORY = "E:\\Languages\\Apache24\\ComfyUI_API"
 INPUT_DIRECTORY = os.path.join(BASE_DIRECTORY, "input")
@@ -20,8 +20,11 @@ OUTPUT_DIRECTORY = os.path.join(BASE_DIRECTORY, "output")
 WORKFLOW_DIRECTORY = os.path.join(BASE_DIRECTORY, "workflows")
 SUCCESS_MESSAGE = "Image processed successfully"
 
+SERVER_ADDRESS = None
+
 app = Flask(__name__)
 CORS(app)
+
 # CORS(app, resources={r"/*": {"origins": "http://real.pinkbean.co.kr:1557"}})
 
 
@@ -51,31 +54,57 @@ def encode_image_to_base64(image_path):
         return base64.b64encode(image_file.read()).decode('utf-8')
 
 
+def is_comfyui_running():
+    # cmdline에 'ComfyUI'라는 단어가 포함된 프로세스가 실행 중인지 확인
+    for process in psutil.process_iter(['pid', 'name', 'cmdline']):
+        if process.info['name'] == 'python.exe':
+            cmdline = ' '.join(process.info['cmdline'])
+            print(cmdline)
+            if 'python_embeded' in cmdline:
+                return True
+    return False
+
+
+def terminate_comfyui():
+    # cmdline에 'ComfyUI'라는 단어가 포함된 프로세스를 찾아 종료
+    for process in psutil.process_iter(['pid', 'name', 'cmdline']):
+        if process.info['name'] == 'python.exe':
+            cmdline = ' '.join(process.info['cmdline'])
+            if 'python_embeded' in cmdline:
+                process.terminate()  # 프로세스 종료
+                process.wait()       # 프로세스 종료 대기
+                global SERVER_ADDRESS
+                SERVER_ADDRESS = None
+
+
 @app.route('/')
 def main():
     # comfyUI 켜야함
-    try:
-        open_websocket_connection()
-    except:
-        # .bat 파일 실행
+    if not is_comfyui_running():
+        # 프로세스가 없으면 comfyUI 실행
         os.system(
             r'start "" "E:\\ComfyUI\\python_embeded\\python.exe" -s "E:\\ComfyUI\\ComfyUI\\main.py" --windows-standalone-build')
 
-        # 일단 실행 메시지 반환
-        return "ComfyUI가 방금 막 실행되었습니다."
+        # 일단 loading.html 반환
+        return render_template("loading.html")
 
-    # 일정 간격으로 서버가 켜졌는지 확인
-    for _ in range(10):  # 최대 10번 시도
-        try:
-            _, server_address, _ = open_websocket_connection()
-            # clear_comfy_cache(server_address=server_address,
-            #                   unload_models=True, free_memory=True)
-            return render_template("index.html")  # 서버 연결 성공 시 반환
-        except:
-            time.sleep(1)  # 1초 간격으로 재시도
+    # comfyUI 서버가 실행 중이라면 바로 index.html 반환
+    try:
+        global SERVER_ADDRESS
+        _, SERVER_ADDRESS, _ = open_websocket_connection()
+        print(SERVER_ADDRESS)
+        return render_template("index.html")
+    except:
+        return render_template("loading.html")
 
-    # 최종 실패 시 메시지 반환
-    return "ComfyUI 실행에 실패했습니다. 다시 시도해주세요."
+
+@app.route('/terminate')
+def terminate():
+    if is_comfyui_running():
+        terminate_comfyui()
+        return "ComfyUI 프로세스를 종료했습니다."
+    else:
+        return "ComfyUI 프로세스가 실행 중이 아닙니다."
 
 
 @app.route('/human_plus_dress', methods=['POST'])
@@ -222,5 +251,19 @@ def get_similar_dresses():
         return jsonify({"error": str(e)}), 500
 
 
+@app.route("/queue_size", methods=["GET"])
+def queue_size():
+    global SERVER_ADDRESS
+    if SERVER_ADDRESS != None:
+        return get_queue_size(SERVER_ADDRESS)
+    else:
+        if not is_comfyui_running():
+            SERVER_ADDRESS = None
+        else:
+            _, SERVER_ADDRESS, _ = open_websocket_connection()
+            print("Connected to websocket")
+        return jsonify({"error": "Server address is not set"}), 500
+
+
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", debug=True, port=1557)
+    app.run(host="0.0.0.0", debug=True, port=1557, threaded=True)

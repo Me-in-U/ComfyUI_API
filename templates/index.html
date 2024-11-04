@@ -18,6 +18,8 @@
     <!-- WebGL 렌더링 컨테이너 추가 -->
     <div class="container">
       <h1>스테이블 디퓨젼 드레스 생성</h1>
+      <h1>현재 이미지 생성 대기열 : <span id="queueSize">0</span></h1>
+      <p id="userQueuePosition" style="display: none">대기열 위치: <span id="queuePosition"></span></p>
       <!-- 옵션 선택 -->
       <label for="optionSelect">옵션 선택:</label>
       <select id="optionSelect" class="select-dropdown">
@@ -84,7 +86,8 @@
       </div>
       <!-- <div id="three-container"></div> -->
     </div>
-    <script src="{{ url_for('static', filename='js/script-241101191300.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/script-241104085800.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/fetchQueueSize.js') }}"></script>
     <!-- <script type="module" src="{{ url_for('static', filename='js/load_three_gltf.js') }}"></script> -->
   </body>
 </html>

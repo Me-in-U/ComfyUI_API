@@ -64,3 +64,13 @@ def clear_comfy_cache(server_address, unload_models=False, free_memory=False):
 
     with urllib.request.urlopen("http://{}/free".format(server_address), data=data) as response:
         return response.read()
+
+
+def get_queue_size(server_address):
+    # 지정된 URL에 요청을 보내 queue_remaining 정보를 가져옴
+    try:
+        with urllib.request.urlopen("http://{}/prompt".format(server_address)) as response:
+            return json.loads(response.read())
+    except Exception as e:
+        print(f"Failed to get queue size: {e}")
+        return None

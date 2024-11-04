@@ -93,3 +93,18 @@ function init() {
 
   animate();
 }
+
+//! 3d 모델 크기 관련
+function adjustAspectRatio() {
+  const container = document.querySelector(".container"); // 상위 컨테이너 선택
+  if (container) {
+    const containerWidth = container.clientWidth; // 컨테이너의 현재 너비 가져오기
+    const aspectHeight = (containerWidth * 9) / 16; // 16:9 비율로 높이 계산
+    const threeContainer = document.getElementById("three-container");
+    threeContainer.style.height = `${aspectHeight}px`; // 계산된 높이를 적용
+  }
+}
+
+// 페이지 로드 시 및 창 크기 변경 시에 함수 실행
+window.addEventListener("load", adjustAspectRatio);
+window.addEventListener("resize", adjustAspectRatio);
