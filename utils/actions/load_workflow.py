@@ -3,7 +3,7 @@ import json
 
 def load_workflow(workflow_path):
     try:
-        with open(workflow_path, 'r',encoding='UTF-8') as file:
+        with open(workflow_path, "r", encoding="UTF-8") as file:
             workflow = json.load(file)
             return json.dumps(workflow)
     except FileNotFoundError:
