@@ -1,9 +1,9 @@
 import io
 import os
 import threading
+
 from PIL import Image
 from rembg import remove
-
 
 BASE_DIRECTORY = "E:\\Languages\\Apache24\\ComfyUI_API\\output"
 INPUT_DIRECTORY = os.path.join(BASE_DIRECTORY, "ND")

@@ -1,8 +1,8 @@
 import io
 import os
+
 from PIL import Image
 from rembg import remove
-
 
 # 이미지가 저장된 폴더 경로 및 결과 저장 폴더 설정
 BASE_DIRECTORY = "E:\\Languages\\Apache24\\ComfyUI_API\\output"

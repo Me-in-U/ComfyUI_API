@@ -1,5 +1,6 @@
 import json
 
+
 def load_workflow(workflow_path):
     try:
         with open(workflow_path, 'r',encoding='UTF-8') as file:

@@ -1,7 +1,9 @@
 import json
+
 from api.api_helpers import generate_image_by_prompt
-from utils.helpers.randomize_seed import generate_random_15_digit_number
 from utils.actions.getImagePath import read_image_paths_from_temp_file
+from utils.helpers.randomize_seed import generate_random_15_digit_number
+
 # import shutil
 
 

@@ -1,41 +1,41 @@
-from itertools import chain
-import json
-import shutil
-import time
-import os
 import base64
-import sys
-from werkzeug.utils import secure_filename
+import json
+import os
+
+import psutil
+from flask import Flask, jsonify, redirect, render_template, request
 from flask_cors import CORS
-from flask import Flask, redirect, request, jsonify, render_template
-from api.websocket_api import clear_comfy_cache, get_queue_size
+from PIL import Image
+from werkzeug.utils import secure_filename
+
 from api.open_websocket import open_websocket_connection
+from api.websocket_api import clear_comfy_cache, get_queue_size
 from similarity.getSimilarity import return_images, return_images2
+from utils.actions.human_plus_dress import human_plus_dress
+from utils.actions.load_workflow import load_workflow
 from utils.actions.new_dress import new_dress
 from utils.actions.vton_dress import vton_dress
-from utils.actions.load_workflow import load_workflow
-from utils.actions.human_plus_dress import human_plus_dress
-import psutil
-from PIL import Image
 
-BASE_DIRECTORY = "E:\\Languages\\Apache24\\ComfyUI_API"
-COMFYUI_INPUT_DIR = "E:\\ComfyUI_0.2.2\\ComfyUI\\input"
-COMFYUI_OUTPUT_DIR = "E:\\ComfyUI_0.2.2\\ComfyUI\\output"
-INPUT_DIRECTORY = os.path.join(BASE_DIRECTORY, "input")
-OUTPUT_DIRECTORY = os.path.join(BASE_DIRECTORY, "output")
-WORKFLOW_DIRECTORY = os.path.join(BASE_DIRECTORY, "workflows")
+COMFYUI_API_BASE_DIRECTORY = "E:\\Languages\\Apache24\\ComfyUI_API"
+INPUT_DIRECTORY = os.path.join(COMFYUI_API_BASE_DIRECTORY, "input")
+OUTPUT_DIRECTORY = os.path.join(COMFYUI_API_BASE_DIRECTORY, "output")
+WORKFLOW_DIRECTORY = os.path.join(COMFYUI_API_BASE_DIRECTORY, "workflows")
+
+COMFYUI_BASE_DIRECTORY = "E:\\ComfyUI_0.2.2\\ComfyUI"
+COMFYUI_INPUT_DIR = os.path.join(COMFYUI_BASE_DIRECTORY, "input")
+COMFYUI_OUTPUT_DIR = os.path.join(COMFYUI_BASE_DIRECTORY, "output")
+
 SUCCESS_MESSAGE = "Image processed successfully"
 SUCCESS_MESSAGE_TEST = "TEST Completed successfully"
+
 SERVER_ADDRESS = None
+
+IMAGE_KEY = 0
+IMAGE_PATH_MAP = {}
 
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024
 CORS(app)
-
-IMAGECOUNT = 0
-IMAGEPATHMAPPING = {}
-
-
 # CORS(app, resources={r"/*": {"origins": "http://real.pinkbean.co.kr:1557"}})
 
 
@@ -189,13 +189,13 @@ def img_new_dress_test():
         print("result_image_paths :", result_image_paths)
 
         image_map_keys = []
-        global IMAGEPATHMAPPING
-        global IMAGECOUNT
+        global IMAGE_PATH_MAP
+        global IMAGE_KEY
         #  new_dress 이미지 경로를 imagePathMapping에 추가
         for path in result_image_paths:
-            IMAGEPATHMAPPING[IMAGECOUNT] = path
-            image_map_keys.append(IMAGECOUNT)
-            IMAGECOUNT += 1  # imagecount를 증가시켜 다음 키로 설정
+            IMAGE_PATH_MAP[IMAGE_KEY] = path
+            image_map_keys.append(IMAGE_KEY)
+            IMAGE_KEY += 1  # imagecount를 증가시켜 다음 키로 설정
 
         # 비슷한 이미지 찾기
         similar_images = [
@@ -212,12 +212,12 @@ def img_new_dress_test():
         for image in similar_images:
             path = image[0][0]
             result_image_paths.append(path)
-            IMAGEPATHMAPPING[IMAGECOUNT] = path
-            image_map_keys.append(IMAGECOUNT)
-            IMAGECOUNT += 1  # imagecount를 증가시켜 다음 키로 설정
+            IMAGE_PATH_MAP[IMAGE_KEY] = path
+            image_map_keys.append(IMAGE_KEY)
+            IMAGE_KEY += 1  # imagecount를 증가시켜 다음 키로 설정
         print(image_map_keys)
 
-        print(IMAGEPATHMAPPING)
+        print(IMAGE_PATH_MAP)
         # 결과 이미지를 Base64로 인코딩하여 반환
         encoded_images = [encode_image_to_base64(
             path) for path in result_image_paths]
@@ -272,16 +272,16 @@ def img_new_dress():
 
         image_map_keys = []
         encoded_images = []
-        global IMAGEPATHMAPPING
-        global IMAGECOUNT
+        global IMAGE_PATH_MAP
+        global IMAGE_KEY
         #  이미지 경로를 imagePathMapping에 추가
         for path in result_image_paths:
-            IMAGEPATHMAPPING[IMAGECOUNT] = path
-            image_map_keys.append(IMAGECOUNT)
-            IMAGECOUNT += 1  # imagecount를 증가시켜 다음 키로 설정
+            IMAGE_PATH_MAP[IMAGE_KEY] = path
+            image_map_keys.append(IMAGE_KEY)
+            IMAGE_KEY += 1  # imagecount를 증가시켜 다음 키로 설정
             # 결과 이미지를 Base64로 인코딩하여 반환
             encoded_images.append(encode_image_to_base64(path))
-        print(IMAGEPATHMAPPING)
+        print(IMAGE_PATH_MAP)
 
         # 메모리 비우기
         clear_memory()
@@ -332,68 +332,6 @@ def img_vton_dress():
         return jsonify({"error": str(e)}), 500
 
 
-@ app.route('/vton_dress_multi_test', methods=['POST'])
-def img_vton_dress_multi_test():
-    try:
-        print(request.form)
-        print(request.files)
-
-        # 드레스
-        dress_file_index_array = request.form['ImageFileIndexArray']
-        print(dress_file_index_array)
-
-        # 쉼표로 구분된 문자열을 정수 리스트로 변환
-        dress_file_index_list = [int(index.strip())
-                                 for index in dress_file_index_array.split(',')]
-        print("dress_file_index_list:", dress_file_index_list)
-
-        # IMAGEPATHMAPPING에서 키값으로 값을 찾아 리스트 생성
-        dress_image_paths = [IMAGEPATHMAPPING[index]
-                             for index in dress_file_index_list if index in IMAGEPATHMAPPING]
-        print("dress_image_paths:", dress_image_paths)
-
-        # 사진 읽고 저장
-        image_file = request.files['myPic']
-        print("image_file", image_file)
-        filename = image_file.filename
-        human_image_path = os.path.join(INPUT_DIRECTORY, filename)
-        print("image_path", human_image_path)
-        image_file.save(human_image_path)
-
-        # 실행 및 결과 이미지 경로 받기
-        result_image_paths = []
-        for dress_image_path in dress_image_paths:
-            output_path = os.path.join(
-                "E:\\Languages\\Apache24\\ComfyUI_API\\TEST_IMAGE", f"merged_{os.path.basename(dress_image_path)}")
-            # vton_dress를 각 드레스 이미지 경로에 대해 실행
-            print("드레스 :", dress_image_path)
-            print("사람 :", human_image_path)
-            background = Image.open(dress_image_path)
-            foreground = Image.open(
-                "E:\\Languages\\Apache24\\ComfyUI_API\\TEST_IMAGE\\TEST_IMG.png")
-            (img_h, img_w) = background.size
-            resize_back = foreground.resize((img_h, img_w))
-            resize_back.paste(foreground, (0, 0), foreground)
-
-            # 결과 이미지를 저장
-            background.save(output_path)
-            result_image_paths.append(output_path)  # 저장된 파일 경로 추가
-
-            print("결과 이미지 저장 경로:", output_path)
-        print(result_image_paths)
-
-        # 결과 이미지를 Base64로 인코딩하여 반환
-        encoded_images = [encode_image_to_base64(
-            path) for path in result_image_paths]
-
-        encoded_images.append(encode_image_to_base64(human_image_path))
-
-        return jsonify({"message": SUCCESS_MESSAGE, "results": encoded_images})
-
-    except Exception as e:
-        print(f"Flask An error occurred: {e}")
-        return jsonify({"error": str(e)}), 500
-
 
 @ app.route('/vton_dress_multi', methods=['POST'])
 def img_vton_dress_multi():
@@ -410,8 +348,8 @@ def img_vton_dress_multi():
                                 for index in dress_file_index_array.split(',')]
 
         # IMAGEPATHMAPPING에서 키값으로 값을 찾아 리스트 생성
-        dress_image_paths = [IMAGEPATHMAPPING[index]
-                             for index in selected_dress_index if index in IMAGEPATHMAPPING]
+        dress_image_paths = [IMAGE_PATH_MAP[index]
+                             for index in selected_dress_index if index in IMAGE_PATH_MAP]
 
         # # 사진 읽고 저장
         image_file = request.files['myPic']
@@ -444,10 +382,6 @@ def img_vton_dress_multi():
 @ app.route('/get_similar_dresses', methods=['POST'])
 def get_similar_dresses():
     try:
-        # 요청 본문의 크기를 로그로 출력
-        content_length = request.content_length
-        print(f"try Request content length: {content_length} bytes")
-        print(request.form)
         image_data = request.form['imageData']
         if image_data.startswith('data:image/jpeg;base64,'):
             image_data = image_data.split('data:image/jpeg;base64,')[1]
@@ -459,7 +393,6 @@ def get_similar_dresses():
 
         similar_images = return_images(
             image_bytes, top_n=5)  # 상위 N개 이미지만 반환
-        print(similar_images)
 
         # 유사한 이미지의 경로를 가져와 base64로 인코딩
         if similar_images:
@@ -470,9 +403,6 @@ def get_similar_dresses():
             return jsonify({"error": "No similar images found"}), 404
 
     except Exception as e:
-        # 요청 본문의 크기를 로그로 출력
-        content_length = request.content_length
-        print(f"Exception Request content length: {content_length} bytes")
         print(f"Flask An error occurred: {e}")
         return jsonify({"error": str(e)}), 500
 

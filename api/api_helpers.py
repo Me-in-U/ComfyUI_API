@@ -1,11 +1,13 @@
 import io
-import os
 import json
+import os
+
 from PIL import Image
 
 # Assuming the import paths are correct and the methods are defined elsewhere:
 from api.open_websocket import open_websocket_connection
-from api.websocket_api import queue_prompt, get_history, get_image, upload_image
+from api.websocket_api import (get_history, get_image, queue_prompt,
+                               upload_image)
 
 
 def generate_image_by_prompt_and_image(prompt, output_path, input_path, filename, save_previews=False):

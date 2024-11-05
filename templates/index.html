@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>프린세스 메이커</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}" />
-    <!-- <script type="importmap">
+	<head>
+		<meta charset="UTF-8" />
+		<title>프린세스 메이커</title>
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+		<link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}" />
+		<!-- <script type="importmap">
       {
         "imports": {
           "three": "https://cdn.jsdelivr.net/npm/three@0.141.0/build/three.module.js",
@@ -13,81 +13,81 @@
         }
       }
     </script> -->
-  </head>
-  <body>
-    <!-- WebGL 렌더링 컨테이너 추가 -->
-    <div class="container">
-      <h1>스테이블 디퓨젼 드레스 생성</h1>
-      <h1>현재 이미지 생성 대기열 : <span id="queueSize">0</span></h1>
-      <p id="userQueuePosition" style="display: none">대기열 위치: <span id="queuePosition"></span></p>
-      <!-- 옵션 선택 -->
-      <label for="optionSelect">옵션 선택:</label>
-      <select id="optionSelect" class="select-dropdown">
-        <option value="human_new_dress">[사람사진 + 프롬프트]로 생성</option>
-        <option value="prompt_new_dress">[프롬프트]로 생성</option>
-        <option value="vton_dress">VTON 생성</option>
-      </select>
-      <!-- 폼 -->
-      <form id="createImageForm">
-        <br />
-        <!-- 이미지 선택 -->
-        <div class="animated" id="select-image-container1">
-          <label for="imageInput1">업로드할 이미지 선택(전신 사진)</label>
-          <div class="upload-btn-container">
-            <input type="file" id="imageInput1" style="display: none" required />
-            <button type="button" class="customFileBtn" id="customFileBtn1">파일 선택</button>
-            <span class="fileName" id="fileName1">선택된 파일 없음</span>
-          </div>
-        </div>
-        <div class="animated hidden" id="select-image-container2">
-          <label for="imageInput2">업로드할 이미지 선택(옷 사진)</label>
-          <div class="upload-btn-container" id="select-image-container2">
-            <input type="file" id="imageInput2" style="display: none" />
-            <button type="button" class="customFileBtn" id="customFileBtn2">파일 선택</button>
-            <span class="fileName" id="fileName2">선택된 파일 없음</span>
-          </div>
-        </div>
-        <!-- 프롬프트 -->
-        <div class="animated prompt-container" id="positivePrompt-container">
-          <label class="prompt-label" for="positivePrompt">Positive Prompt</label>
-          <textarea id="positivePrompt" placeholder="긍정적 설명 입력(영어 단어 형태)" required rows="6"></textarea>
-          <label class="checkbox-label">
-            <input type="checkbox" id="useDefaultPositive" />
-            기본 프롬프트 사용
-          </label>
-        </div>
-        <div class="animated prompt-container" id="negativePrompt-container">
-          <label class="prompt-label" for="negativePrompt">Negative Prompt</label>
-          <textarea id="negativePrompt" placeholder="부정적 설명 입력(영어 단어 형태)" required rows="6"></textarea>
-          <label class="checkbox-label">
-            <input type="checkbox" id="useDefaultNegative" />
-            기본 프롬프트 사용
-          </label>
-        </div>
-        <button class="submitBtn" id="createBtn" type="submit">이미지 생성 시작</button>
-      </form>
-      <!-- 결과창 -->
-      <div id="loading" style="display: none">
-        <div id="spinner"></div>
-        <div id="loadingText">로딩중</div>
-      </div>
-      <form id="showSimilarForm">
-        <div class="images-container">
-          <div id="original_image"></div>
-          <div id="clothes_image" style="display: none"></div>
-          <div id="result_image"></div>
-        </div>
-        <button class="submitBtn" id="getSimilarBtn" type="submit" style="display: none">비슷한 이미지 찾기</button>
-      </form>
-      <!-- 메모 -->
-      <div>
-        <p>memo : 기본 프롬프트 사용을 누르는걸 추천</p>
-        <p>사진은 서버에 저장됩니다.</p>
-      </div>
-      <!-- <div id="three-container"></div> -->
-    </div>
-    <script src="{{ url_for('static', filename='js/script-241104085800.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/fetchQueueSize.js') }}"></script>
-    <!-- <script type="module" src="{{ url_for('static', filename='js/load_three_gltf.js') }}"></script> -->
-  </body>
+	</head>
+	<body>
+		<!-- WebGL 렌더링 컨테이너 추가 -->
+		<div class="container">
+			<h1>스테이블 디퓨젼 드레스 생성</h1>
+			<h1>현재 이미지 생성 대기열 : <span id="queueSize">0</span></h1>
+			<p id="userQueuePosition" style="display: none">대기열 위치: <span id="queuePosition"></span></p>
+			<!-- 옵션 선택 -->
+			<label for="optionSelect">옵션 선택:</label>
+			<select id="optionSelect" class="select-dropdown">
+				<option value="human_new_dress">[사람사진 + 프롬프트]로 생성</option>
+				<option value="prompt_new_dress">[프롬프트]로 생성</option>
+				<option value="vton_dress">VTON 생성</option>
+			</select>
+			<!-- 폼 -->
+			<form id="createImageForm">
+				<br />
+				<!-- 이미지 선택 -->
+				<div class="animated" id="select-image-container1">
+					<label for="imageInput1">업로드할 이미지 선택(전신 사진)</label>
+					<div class="upload-btn-container">
+						<input type="file" id="imageInput1" style="display: none" required />
+						<button type="button" class="customFileBtn" id="customFileBtn1">파일 선택</button>
+						<span class="fileName" id="fileName1">선택된 파일 없음</span>
+					</div>
+				</div>
+				<div class="animated hidden" id="select-image-container2">
+					<label for="imageInput2">업로드할 이미지 선택(옷 사진)</label>
+					<div class="upload-btn-container" id="select-image-container2">
+						<input type="file" id="imageInput2" style="display: none" />
+						<button type="button" class="customFileBtn" id="customFileBtn2">파일 선택</button>
+						<span class="fileName" id="fileName2">선택된 파일 없음</span>
+					</div>
+				</div>
+				<!-- 프롬프트 -->
+				<div class="animated prompt-container" id="positivePrompt-container">
+					<label class="prompt-label" for="positivePrompt">Positive Prompt</label>
+					<textarea id="positivePrompt" placeholder="긍정적 설명 입력(영어 단어 형태)" required rows="6"></textarea>
+					<label class="checkbox-label">
+						<input type="checkbox" id="useDefaultPositive" />
+						기본 프롬프트 사용
+					</label>
+				</div>
+				<div class="animated prompt-container" id="negativePrompt-container">
+					<label class="prompt-label" for="negativePrompt">Negative Prompt</label>
+					<textarea id="negativePrompt" placeholder="부정적 설명 입력(영어 단어 형태)" required rows="6"></textarea>
+					<label class="checkbox-label">
+						<input type="checkbox" id="useDefaultNegative" />
+						기본 프롬프트 사용
+					</label>
+				</div>
+				<button class="submitBtn" id="createBtn" type="submit">이미지 생성 시작</button>
+			</form>
+			<!-- 결과창 -->
+			<div id="loading" style="display: none">
+				<div id="spinner"></div>
+				<div id="loadingText">로딩중</div>
+			</div>
+			<form id="showSimilarForm">
+				<div class="images-container">
+					<div id="original_image"></div>
+					<div id="clothes_image" style="display: none"></div>
+					<div id="result_image"></div>
+				</div>
+				<button class="submitBtn" id="getSimilarBtn" type="submit" style="display: none">비슷한 이미지 찾기</button>
+			</form>
+			<!-- 메모 -->
+			<div>
+				<p>memo : 기본 프롬프트 사용을 누르는걸 추천</p>
+				<p>사진은 서버에 저장됩니다.</p>
+			</div>
+			<!-- <div id="three-container"></div> -->
+		</div>
+		<script src="{{ url_for('static', filename='js/script-241104085800.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/fetchQueueSize.js') }}"></script>
+		<!-- <script type="module" src="{{ url_for('static', filename='js/load_three_gltf.js') }}"></script> -->
+	</body>
 </html>

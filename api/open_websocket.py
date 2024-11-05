@@ -1,6 +1,8 @@
 # NOTE: websocket-client (https://github.com/websocket-client/websocket-client)
-import websocket
 import uuid
+
+import websocket
+
 # pip install websocket-client
 
 
