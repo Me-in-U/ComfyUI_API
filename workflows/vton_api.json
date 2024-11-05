@@ -11,7 +11,7 @@
   "2": {
     "inputs": {
       "auto_mask_category": "dresses",
-      "prompt": "floor-length skirt, wedding dress, long dress, bride dress, feet length dress",
+      "prompt": "bride, wedding dress, elegant floor-length skirt, best quality, best shadow, masterpiece, detail, ultra high res",
       "fit_human_image_size": false,
       "fix_origin_merge": false,
       "denoise_steps": 30,

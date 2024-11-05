@@ -27,7 +27,7 @@ def new_dress(workflow, positive_prompt, negative_prompt, save_previews=False):
     generate_image_by_prompt(
         prompt, './output/', save_previews)
 
-    return_image_path = read_image_paths_from_temp_file()
+    return_image_path = read_image_paths_from_temp_file()[0]
 
     # 유사도 체크 배경제거 테스트용
     # # 이미지를 다른 디렉토리에 복사

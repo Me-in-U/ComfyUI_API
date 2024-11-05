@@ -30,4 +30,4 @@ def vton_dress(workflow, input_path1, input_path2, save_previews=False):
         prompt, './output/', input_path1, filename1, input_path2, filename2, save_previews)
 
     # tempImage.txt 파일에서 이미지 경로 읽기
-    return read_image_paths_from_temp_file()
+    return read_image_paths_from_temp_file()[0]

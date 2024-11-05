@@ -34,4 +34,4 @@ def human_plus_dress(workflow, input_path, positive_prompt, negative_prompt, sav
         prompt, './output/', input_path, filename, save_previews)
 
     # tempImage.txt 파일에서 이미지 경로 읽기
-    return read_image_paths_from_temp_file()
+    return read_image_paths_from_temp_file()[0]

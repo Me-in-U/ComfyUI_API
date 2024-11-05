@@ -98,6 +98,26 @@ def return_images(image_bytes, top_n):
     return similar_images
 
 
+def return_images2(created_image_path, top_n):
+    # 모델 로드
+    base_model = VGG16(weights='imagenet')
+    model = Model(inputs=base_model.input,
+                  outputs=base_model.get_layer('fc2').output)
+
+    # 입력 이미지의 features 만들기
+    temp_features = extract_and_save_features(
+        created_image_path, created_image_path + ".npy", model)  # 임시 파일의 경로를 사용
+
+    # 데이터셋에서 features 딕셔너리 만들기
+    features_dict = dataset_features_to_dictionary(
+        DATA_ND_DIRECTORY, DATA_NPY_DIRECTORY, model)
+
+    # 유사 이미지 찾기
+    similar_images = find_similar_images(temp_features, features_dict, top_n)
+
+    return similar_images
+
+
 # def test_code():
 #     INPUT_BASE_DIRECTORY = "E:\\Languages\\Apache24\\ComfyUI_API\\similarity"
 #     # 모델 로드
@@ -106,7 +126,7 @@ def return_images(image_bytes, top_n):
 #                   outputs=base_model.get_layer('fc2').output)
 
 #     # 입력 이미지
-#     input_img_path = "E:\\Languages\\Apache24\\ComfyUI_API\\similarity\\test_image.jpg"
+#     input_img_path = "E:\\ComfyUI_0.2.2\\ComfyUI\\output\\VTON_00006_.png"
 #     base_name = os.path.basename(input_img_path)
 
 #     # 입력 이미지의 features 만들기
