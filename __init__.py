@@ -28,7 +28,7 @@ COMFYUI_OUTPUT_DIR = os.path.join(COMFYUI_BASE_DIRECTORY, "output")
 SUCCESS_MESSAGE = "Image processed successfully"
 SUCCESS_MESSAGE_TEST = "TEST Completed successfully"
 
-SERVER_ADDRESS = None
+SERVER_ADDRESS = '127.0.0.1:8188'
 
 IMAGE_KEY = 0
 IMAGE_PATH_MAP = {}
@@ -92,19 +92,14 @@ def terminate_comfyui():
                 process.terminate()  # 프로세스 종료
                 process.wait()       # 프로세스 종료 대기
                 print("ComfyUI 종료됨")
-                global SERVER_ADDRESS
-                SERVER_ADDRESS = None
 
 
 def clear_memory():
-    _, server_address, _ = open_websocket_connection()
-    clear_comfy_cache(server_address=server_address,
-                      unload_models=True, free_memory=True)
+    clear_comfy_cache(SERVER_ADDRESS, unload_models=True, free_memory=True)
 
 
 @app.route('/')
 def main():
-    global SERVER_ADDRESS
     # comfyUI 켜야함
     if not is_comfyui_running():
         print("Execute ComfyUI")
@@ -116,11 +111,9 @@ def main():
 
     # comfyUI 서버가 실행 중이라면 바로 index.html 반환
     try:
-        _, SERVER_ADDRESS, _ = open_websocket_connection()
         print("SERVER_ADDRESS : ", SERVER_ADDRESS)
         return render_template("index.html")
     except:
-        SERVER_ADDRESS = None
         print("로딩화면 전송")
         return render_template("loading.html")
 
@@ -163,9 +156,7 @@ def img_human_plus_dress():
         print("result_image_paths :", result_image_paths)
 
         # 메모리 비우기
-        _, server_address, _ = open_websocket_connection()
-        clear_comfy_cache(server_address=server_address,
-                          unload_models=True, free_memory=True)
+        clear_memory()
 
         # 결과 이미지를 Base64로 인코딩하여 반환
         encoded_images = [encode_image_to_base64(
@@ -409,17 +400,18 @@ def get_similar_dresses():
 
 @ app.route("/queue_size", methods=["GET"])
 def queue_size():
-    qs = get_queue_size(SERVER_ADDRESS)
-    if qs != None:
-        return get_queue_size(SERVER_ADDRESS)
-    else:
+    try:
+        qs = get_queue_size(SERVER_ADDRESS)
+        if qs != None:
+            return get_queue_size(SERVER_ADDRESS)
+        else:
+            return jsonify({"error": "Server address is not set"}), 500
+    except:
         return jsonify({"error": "Server address is not set"}), 500
 
 
 if __name__ == "__main__":
-    if is_comfyui_running():
-        _, SERVER_ADDRESS, _ = open_websocket_connection()
-    else:
+    if not is_comfyui_running():
         run_comfyui()
     print("SERVER_ADDRESS : ", SERVER_ADDRESS)
     app.run(host="0.0.0.0", debug=True, port=1557, threaded=True)
