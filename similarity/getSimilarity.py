@@ -101,6 +101,9 @@ def return_images(image_bytes, top_n):
     # 임시 파일 삭제
     os.remove(tmp_file_path)
 
+    base_model = None
+    model = None
+
     return similar_images
 
 
@@ -121,6 +124,9 @@ def return_images2(created_image_path, top_n):
 
     # 유사 이미지 찾기
     similar_images = find_similar_images(temp_features, features_dict, top_n)
+
+    base_model = None
+    model = None
 
     return similar_images
 

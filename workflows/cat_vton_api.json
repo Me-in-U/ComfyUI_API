@@ -1,0 +1,265 @@
+{
+  "1": {
+    "inputs": {
+      "image": "clipspace/clipspace-mask-13624659.100000001.png [input]",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "human_image"
+    }
+  },
+  "2": {
+    "inputs": {
+      "image": "ND_02188_.png",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "clothes_image"
+    }
+  },
+  "3": {
+    "inputs": {
+      "sam_model": "sam_vit_l (1.25GB)",
+      "grounding_dino_model": "GroundingDINO_SwinT_OGC (694MB)",
+      "threshold": 0.35000000000000003,
+      "detail_method": "VITMatte",
+      "detail_erode": 6,
+      "detail_dilate": 6,
+      "black_point": 0.01,
+      "white_point": 0.99,
+      "process_detail": false,
+      "prompt": "skirt, jacket, pants, skirt",
+      "device": "cuda",
+      "max_megapixels": 2,
+      "cache_model": false,
+      "image": [
+        "1",
+        0
+      ]
+    },
+    "class_type": "LayerMask: SegmentAnythingUltra V2",
+    "_meta": {
+      "title": "LayerMask: SegmentAnythingUltra V2"
+    }
+  },
+  "6": {
+    "inputs": {
+      "mask_grow": 15,
+      "mixed_precision": "fp32",
+      "seed": [
+        "57",
+        0
+      ],
+      "steps": 45,
+      "cfg": 1.52,
+      "image": [
+        "1",
+        0
+      ],
+      "mask": [
+        "15",
+        0
+      ],
+      "refer_image": [
+        "2",
+        0
+      ]
+    },
+    "class_type": "CatVTONWrapper",
+    "_meta": {
+      "title": "CatVTON Wrapper"
+    }
+  },
+  "7": {
+    "inputs": {
+      "images": [
+        "6",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
+  "15": {
+    "inputs": {
+      "channel": "red",
+      "image": [
+        "38",
+        0
+      ]
+    },
+    "class_type": "ImageToMask",
+    "_meta": {
+      "title": "Convert Image to Mask"
+    }
+  },
+  "30": {
+    "inputs": {
+      "expand": 10,
+      "tapered_corners": true,
+      "mask": [
+        "45",
+        0
+      ]
+    },
+    "class_type": "GrowMask",
+    "_meta": {
+      "title": "GrowMask +10"
+    }
+  },
+  "31": {
+    "inputs": {
+      "expand": -10,
+      "tapered_corners": true,
+      "mask": [
+        "30",
+        0
+      ]
+    },
+    "class_type": "GrowMask",
+    "_meta": {
+      "title": "GrowMask -10"
+    }
+  },
+  "38": {
+    "inputs": {
+      "mask": [
+        "31",
+        0
+      ]
+    },
+    "class_type": "MaskToImage",
+    "_meta": {
+      "title": "Convert Mask to Image"
+    }
+  },
+  "39": {
+    "inputs": {
+      "sam_model": "sam_vit_l (1.25GB)",
+      "grounding_dino_model": "GroundingDINO_SwinT_OGC (694MB)",
+      "threshold": 0.3,
+      "detail_method": "VITMatte",
+      "detail_erode": 6,
+      "detail_dilate": 6,
+      "black_point": 0.01,
+      "white_point": 0.99,
+      "process_detail": false,
+      "prompt": "hair,face,hands",
+      "device": "cuda",
+      "max_megapixels": 2,
+      "cache_model": false,
+      "image": [
+        "1",
+        0
+      ]
+    },
+    "class_type": "LayerMask: SegmentAnythingUltra V2",
+    "_meta": {
+      "title": "LayerMask: SegmentAnythingUltra V2"
+    }
+  },
+  "45": {
+    "inputs": {
+      "x": 0,
+      "y": 0,
+      "operation": "subtract",
+      "destination": [
+        "3",
+        1
+      ],
+      "source": [
+        "53",
+        0
+      ]
+    },
+    "class_type": "MaskComposite",
+    "_meta": {
+      "title": "MaskComposite"
+    }
+  },
+  "46": {
+    "inputs": {
+      "x": 0,
+      "y": 0,
+      "operation": "add",
+      "destination": [
+        "39",
+        1
+      ],
+      "source": [
+        "49",
+        1
+      ]
+    },
+    "class_type": "MaskComposite",
+    "_meta": {
+      "title": "MaskComposite"
+    }
+  },
+  "49": {
+    "inputs": {
+      "sam_model": "sam_vit_l (1.25GB)",
+      "grounding_dino_model": "GroundingDINO_SwinT_OGC (694MB)",
+      "threshold": 0.3,
+      "detail_method": "VITMatte",
+      "detail_erode": 6,
+      "detail_dilate": 6,
+      "black_point": 0.01,
+      "white_point": 0.99,
+      "process_detail": false,
+      "prompt": "hands",
+      "device": "cuda",
+      "max_megapixels": 2,
+      "cache_model": false,
+      "image": [
+        "1",
+        0
+      ]
+    },
+    "class_type": "LayerMask: SegmentAnythingUltra V2",
+    "_meta": {
+      "title": "LayerMask: SegmentAnythingUltra V2"
+    }
+  },
+  "52": {
+    "inputs": {
+      "expand": 10,
+      "tapered_corners": true,
+      "mask": [
+        "46",
+        0
+      ]
+    },
+    "class_type": "GrowMask",
+    "_meta": {
+      "title": "GrowMask +10"
+    }
+  },
+  "53": {
+    "inputs": {
+      "expand": -8,
+      "tapered_corners": true,
+      "mask": [
+        "52",
+        0
+      ]
+    },
+    "class_type": "GrowMask",
+    "_meta": {
+      "title": "GrowMask -10"
+    }
+  },
+  "57": {
+    "inputs": {
+      "seed": 244844284700637
+    },
+    "class_type": "LayerUtility: Seed",
+    "_meta": {
+      "title": "LayerUtility: Seed"
+    }
+  }
+}

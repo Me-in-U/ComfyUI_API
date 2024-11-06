@@ -5,6 +5,7 @@ import os
 import psutil
 from flask import Flask, jsonify, redirect, render_template, request
 from flask_cors import CORS
+from numba import cuda
 from PIL import Image
 from werkzeug.utils import secure_filename
 
@@ -15,6 +16,7 @@ from utils.actions.human_plus_dress import human_plus_dress
 from utils.actions.load_workflow import load_workflow
 from utils.actions.new_dress import new_dress
 from utils.actions.vton_dress import vton_dress
+from utils.actions.vton_dress_cat import vton_dress_cat
 
 COMFYUI_API_BASE_DIRECTORY = "E:\\Languages\\Apache24\\ComfyUI_API"
 INPUT_DIRECTORY = os.path.join(COMFYUI_API_BASE_DIRECTORY, "input")
@@ -98,6 +100,9 @@ def terminate_comfyui():
 
 def clear_memory():
     clear_comfy_cache(SERVER_ADDRESS, unload_models=True, free_memory=True)
+    device = cuda.get_current_device()
+    device.reset()
+    print("메모리 클리어")
 
 
 @app.route("/")
@@ -178,12 +183,21 @@ def img_human_plus_dress():
 def img_new_dress_test():
     try:
         result_image_paths = [
-            ".\\output\\T1.png",
-            ".\\output\\T2.png",
-            ".\\output\\T3.png",
+            "E:\\ComfyUI0.2.2\\ComfyUI\\output\\ND_00210.png",
+            "E:\\Languages\\Apache24\\ComfyUIAPI\\output\\ND\\dress_1225.jpg",
+            "E:\\Languages\\Apache24\\ComfyUI_API\\output\\ND\\dress_542.jpg",
+            "E:\\Languages\\Apache24\\ComfyUIAPI\\output\\ND\\dress_1271.jpg",
+            "E:\\Languages\\Apache24\\ComfyUIAPI\\output\\ND\\dress_276.jpg",
+            "E:\\Languages\\Apache24\\ComfyUIAPI\\output\\ND\\dress_730.jpg",
         ]
-        print("result_image_paths :", result_image_paths)
-
+        result_image_paths2 = [
+            "E:\\Languages\\Apache24\\ComfyUIAPI\\output\\ND\\dress_918.jpg",
+            "E:\\Languages\\Apache24\\ComfyUIAPI\\output\\ND\\dress_937.jpg",
+            "",
+            "",
+            "",
+            "",
+        ]
         image_map_keys = []
         global IMAGE_PATH_MAP
         global IMAGE_KEY
@@ -192,38 +206,6 @@ def img_new_dress_test():
             IMAGE_PATH_MAP[IMAGE_KEY] = path
             image_map_keys.append(IMAGE_KEY)
             IMAGE_KEY += 1  # imagecount를 증가시켜 다음 키로 설정
-
-        # 비슷한 이미지 찾기
-        similar_images = [
-            [
-                (
-                    "E:\\Languages\\Apache24\\ComfyUI_API\\output\\ND\\dress_1214.jpg",
-                    0.6821891174346819,
-                )
-            ],
-            [
-                (
-                    "E:\\Languages\\Apache24\\ComfyUI_API\\output\\ND\\dress_621.jpg",
-                    0.7606961665896327,
-                )
-            ],
-            [
-                (
-                    "E:\\Languages\\Apache24\\ComfyUI_API\\output\\ND\\dress_542.jpg",
-                    0.7869456237193144,
-                )
-            ],
-        ]  # 상위 N개 이미지만 반환
-        print(similar_images)
-
-        #  similar_images 경로를 imagePathMapping에 추가
-        for image in similar_images:
-            path = image[0][0]
-            result_image_paths.append(path)
-            IMAGE_PATH_MAP[IMAGE_KEY] = path
-            image_map_keys.append(IMAGE_KEY)
-            IMAGE_KEY += 1  # imagecount를 증가시켜 다음 키로 설정
-        print(image_map_keys)
 
         print(IMAGE_PATH_MAP)
         # 결과 이미지를 Base64로 인코딩하여 반환
@@ -274,22 +256,23 @@ def img_new_dress():
 
         negative_prompt = request.form.get(
             "negative_prompt",
-            "(black color dress:1.5),black color accessories,Paintings,sketches, (worst quality, low quality, normal quality:1.7),lowres, blurry, text, logo, ((monochrome)), ((grayscale)), easynegative, badhandv, , wrong finger, lowres, bad anatomy, bad handsmissing fingers,extra digit ,fewer digits,signature,watermark, username, blurry, bad feet, fused girls, fushion, signature, watermark, username, blurry, (bad feet:1.1),, monochrome, duplicate, morbid, mutilated, long neck, mutated hands, poorly drawn hands, poorly drawn face, mutation, deformed, bad proportions, malformed limbs, extra limbs, cloned face, disfigured, gross proportions, (missing arms:1.331), (missing legs:1.331), (extra arms:1.331), (extra legs:1.331), plump, bad legs, bad anatomy, bad hands, text, error, missing fingers,watermark, username, blurry, long body, bad anatomy, bad hands, missing fingers, pubic hair,extra digit, fewer digits, bad anatomy, bad hands, missing fingers, signature, watermark, username, blurry,huge breasts,Large Breasts,kid,children,extra hands,extra arms,((disfigured)), ((bad art)), ((deformed)),ugly face,umbrella,deformed face,malformed face,extra head, easynegative, badhandv4,Big Breasts,multiple girls, multiple view,Big Breasts,multiple girls, multiple views,Long Necks,Long Torso,  bad_pictures",
+            "(black color dress:1.5),Paintings,sketches, (worst quality, low quality, normal quality:1.7),lowres, blurry, text, logo, ((monochrome)), ((grayscale)), easynegative, badhandv, , wrong finger, lowres, bad anatomy, bad handsmissing fingers,extra digit ,fewer digits,signature,watermark, username, blurry, bad feet, fused girls, fushion, signature, watermark, username, blurry, (bad feet:1.1),, monochrome, duplicate, morbid, mutilated, long neck, mutated hands, poorly drawn hands, poorly drawn face, mutation, deformed, bad proportions, malformed limbs, extra limbs, cloned face, disfigured, gross proportions, (missing arms:1.331), (missing legs:1.331), (extra arms:1.331), (extra legs:1.331), plump, bad legs, bad anatomy, bad hands, text, error, missing fingers,watermark, username, blurry, long body, bad anatomy, bad hands, missing fingers, pubic hair,extra digit, fewer digits, bad anatomy, bad hands, missing fingers, signature, watermark, username, blurry,huge breasts,Large Breasts,kid,children,extra hands,extra arms,((disfigured)), ((bad art)), ((deformed)),ugly face,umbrella,deformed face,malformed face,extra head, easynegative, badhandv4,Big Breasts,multiple girls, multiple view,Big Breasts,multiple girls, multiple views,Long Necks,Long Torso,  bad_pictures",
         )
 
         # 실행 및 결과 이미지 경로 받기
         result_image_paths = []
-        for i in range(0, 6, 2):
+        for _ in range(6):
             relative_path = new_dress(
                 workflow, positive_prompt, negative_prompt, save_previews=True
             )
             absolute_path = os.path.join(
                 COMFYUI_OUTPUT_DIR, os.path.relpath(relative_path, "./output")
             )
-            result_image_paths.append(absolute_path)
-            result_image_paths.append(
-                return_images2(result_image_paths[i], top_n=1)[0][0]
-            )
+            # result_image_paths.append(absolute_path)
+            # result_image_paths.append(
+            #     return_images2(result_image_paths[i], top_n=1)[0][0]
+            # )
+            result_image_paths.append(return_images2(absolute_path, top_n=1)[0][0])
 
         image_map_keys = []
         encoded_images = []
@@ -366,11 +349,13 @@ def img_vton_dress_multi():
 
         # 드레스
         dress_file_index_array = request.form["ImageFileIndexArray"]
+        print(dress_file_index_array)
 
         # 쉼표로 구분된 문자열을 정수 리스트로 변환
         selected_dress_index = [
             int(index.strip()) for index in dress_file_index_array.split(",")
         ]
+        print(selected_dress_index)
 
         # IMAGEPATHMAPPING에서 키값으로 값을 찾아 리스트 생성
         dress_image_paths = [
@@ -378,12 +363,14 @@ def img_vton_dress_multi():
             for index in selected_dress_index
             if index in IMAGE_PATH_MAP
         ]
+        print(dress_image_paths)
 
         # # 사진 읽고 저장
         image_file = request.files["myPic"]
         filename = image_file.filename
         human_image_path = os.path.join(INPUT_DIRECTORY, filename)
         image_file.save(human_image_path)
+        print(image_file)
 
         # 실행 및 결과 이미지 경로 받기
         encoded_images = []
@@ -392,11 +379,116 @@ def img_vton_dress_multi():
             vton_image_path = vton_dress(
                 workflow, human_image_path, dress_image_path, save_previews=True
             )
+            print(vton_image_path)
+            clear_memory()
             # 결과 이미지를 Base64로 인코딩하여 반환
             encoded_images.append(encode_image_to_base64(vton_image_path))
 
         # 누군가를 위한 사람이미지 추가
         encoded_images.append(encode_image_to_base64(human_image_path))
+        print(encoded_images)
+
+        # 메모리 비우기
+        clear_memory()
+
+        return jsonify({"message": SUCCESS_MESSAGE, "results": encoded_images})
+
+    except Exception as e:
+        print(f"Flask An error occurred: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/vton_dress_multi_cat", methods=["POST"])
+def img_vton_dress_multi_cat():
+    try:
+        # 워크플로우 로드
+        workflow_path = os.path.join(WORKFLOW_DIRECTORY, "cat_vton_api.json")
+        workflow = load_workflow(workflow_path)
+
+        # 드레스
+        dress_file_index_array = request.form["ImageFileIndexArray"]
+        print(dress_file_index_array)
+
+        # 쉼표로 구분된 문자열을 정수 리스트로 변환
+        selected_dress_index = [
+            int(index.strip()) for index in dress_file_index_array.split(",")
+        ]
+        print(selected_dress_index)
+
+        # IMAGEPATHMAPPING에서 키값으로 값을 찾아 리스트 생성
+        dress_image_paths = [
+            IMAGE_PATH_MAP[index]
+            for index in selected_dress_index
+            if index in IMAGE_PATH_MAP
+        ]
+        print(dress_image_paths)
+
+        # # 사진 읽고 저장
+        image_file = request.files["myPic"]
+        filename = image_file.filename
+        human_image_path = os.path.join(INPUT_DIRECTORY, filename)
+        image_file.save(human_image_path)
+        print(image_file)
+
+        # 실행 및 결과 이미지 경로 받기
+        encoded_images = []
+        for dress_image_path in dress_image_paths:
+            # vton_dress를 각 드레스 이미지 경로에 대해 실행
+            vton_image_path = vton_dress_cat(
+                workflow, human_image_path, dress_image_path, save_previews=True
+            )
+            print(vton_image_path)
+
+            # 결과 이미지를 Base64로 인코딩하여 반환
+            encoded_images.append(encode_image_to_base64(vton_image_path))
+
+        # 누군가를 위한 사람이미지 추가
+        encoded_images.append(encode_image_to_base64(human_image_path))
+        print(encoded_images)
+
+        # 메모리 비우기
+        clear_memory()
+
+        return jsonify({"message": SUCCESS_MESSAGE, "results": encoded_images})
+
+    except Exception as e:
+        print(f"Flask An error occurred: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/vton_dress_test", methods=["POST"])
+def img_vton_dress_test():
+    try:
+        # # 사진 읽고 저장
+        image_file = request.files["myPic"]
+        filename = image_file.filename
+        human_image_path = os.path.join(INPUT_DIRECTORY, filename)
+        image_file.save(human_image_path)
+        print(image_file)
+
+        result_image_paths = [
+            "E:\\ComfyUI0.2.2\\ComfyUI\\output\\ND_00210.png",
+            "E:\\Languages\\Apache24\\ComfyUIAPI\\output\\ND\\dress_1225.jpg",
+            "E:\\ComfyUI_0.2.2\\ComfyUI\\temp\\ComfyUI_temp_npipu_00003_.png",
+            "E:\ComfyUI_0.2.2\ComfyUI\temp\ComfyUI_temp_npipu_00007_.png",
+            "E:\ComfyUI_0.2.2\ComfyUI\temp\ComfyUI_temp_npipu_00016_.png",
+            "E:\ComfyUI_0.2.2\ComfyUI\temp\ComfyUI_temp_npipu_00017_.png",
+        ]
+        result_image_paths2 = [
+            "E:\ComfyUI_0.2.2\ComfyUI\temp\ComfyUI_temp_npipu_00018_.png",
+            "E:\ComfyUI_0.2.2\ComfyUI\temp\ComfyUI_temp_npipu_00023_.png",
+            "",
+            "",
+            "",
+            "",
+        ]
+        encoded_images = []
+        for path in result_image_paths:
+            encoded_images.append(encode_image_to_base64(path))
+
+        # 누군가를 위한 사람이미지 추가
+        encoded_images.append(encode_image_to_base64(human_image_path))
+        print(encoded_images)
 
         # 메모리 비우기
         clear_memory()
@@ -452,4 +544,4 @@ if __name__ == "__main__":
     if not is_comfyui_running():
         run_comfyui()
     print("SERVER_ADDRESS : ", SERVER_ADDRESS)
-    app.run(host="0.0.0.0", debug=True, port=1557, threaded=True)
+    app.run(host="0.0.0.0", debug=False, port=1557, threaded=True)
