@@ -4,9 +4,14 @@
 
 - https://github.com/9elements/comfyui-api
 
-#### IDM-VTON CustomNodes
+#### IDM-VTON CustomNode
 
 - https://github.com/neuralninja22/IDM-VTON
+
+#### CAT-VTON CustomNode
+
+- https://github.com/Zheng-Chong/CatVTON
+- https://github.com/chflame163/ComfyUI_CatVTON_Wrapper
 
 ## Current Workflows Setup
 
