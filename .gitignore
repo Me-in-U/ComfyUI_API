@@ -13,3 +13,5 @@ tempCodeRunnerFile.py
 comfyui.log
 *.log
 input/jpg
+*.jpeg
+*.avif

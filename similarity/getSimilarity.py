@@ -134,23 +134,23 @@ def return_images2(created_image_path, top_n):
 # def test_code():
 #     INPUT_BASE_DIRECTORY = "E:\\Languages\\Apache24\\ComfyUI_API\\similarity"
 #     # 모델 로드
-#     base_model = VGG16(weights='imagenet')
-#     model = Model(inputs=base_model.input,
-#                   outputs=base_model.get_layer('fc2').output)
+#     base_model = VGG16(weights="imagenet")
+#     model = Model(inputs=base_model.input, outputs=base_model.get_layer("fc2").output)
 
 #     # 입력 이미지
-#     input_img_path = "E:\\ComfyUI_0.2.2\\ComfyUI\\output\\VTON_00006_.png"
+#     input_img_path = "E:\\ComfyUI_0.2.2\\ComfyUI\\output\\ND_00004_.png"
 #     base_name = os.path.basename(input_img_path)
 
 #     # 입력 이미지의 features 만들기
 #     input_npy_path = os.path.join(
-#         INPUT_BASE_DIRECTORY, f"{os.path.splitext(base_name)[0]}.npy")
-#     target_features = extract_and_save_features(
-#         input_img_path, input_npy_path, model)
+#         INPUT_BASE_DIRECTORY, f"{os.path.splitext(base_name)[0]}.npy"
+#     )
+#     target_features = extract_and_save_features(input_img_path, input_npy_path, model)
 
 #     # 데이터셋에서 features 딕셔너리 만들기
 #     features_dict = dataset_features_to_dictionary(
-#         DATA_ND_DIRECTORY, DATA_NPY_DIRECTORY, model)
+#         DATA_ND_DIRECTORY, DATA_NPY_DIRECTORY, model
+#     )
 
 #     # 유사 이미지 찾기
 #     similar_images = find_similar_images(target_features, features_dict)

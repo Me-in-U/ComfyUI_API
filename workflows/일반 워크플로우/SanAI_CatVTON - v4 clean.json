@@ -1,0 +1,1229 @@
+{
+  "last_node_id": 65,
+  "last_link_id": 121,
+  "nodes": [
+    {
+      "id": 45,
+      "type": "MaskComposite",
+      "pos": {
+        "0": -890,
+        "1": -563
+      },
+      "size": {
+        "0": 315,
+        "1": 126
+      },
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "destination",
+          "type": "MASK",
+          "link": 89
+        },
+        {
+          "name": "source",
+          "type": "MASK",
+          "link": 93
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [
+            90
+          ],
+          "slot_index": 0,
+          "shape": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MaskComposite"
+      },
+      "widgets_values": [
+        0,
+        0,
+        "subtract"
+      ]
+    },
+    {
+      "id": 53,
+      "type": "GrowMask",
+      "pos": {
+        "0": -1083,
+        "1": -414
+      },
+      "size": {
+        "0": 315,
+        "1": 82
+      },
+      "flags": {
+        "collapsed": true
+      },
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "mask",
+          "type": "MASK",
+          "link": 91
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [
+            93
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "GrowMask -10",
+      "properties": {
+        "Node name for S&R": "GrowMask"
+      },
+      "widgets_values": [
+        -8,
+        true
+      ]
+    },
+    {
+      "id": 39,
+      "type": "LayerMask: SegmentAnythingUltra V2",
+      "pos": {
+        "0": -2086,
+        "1": -419
+      },
+      "size": {
+        "0": 446.20928955078125,
+        "1": 366
+      },
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 71
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "links": [],
+          "slot_index": 0,
+          "shape": 3
+        },
+        {
+          "name": "mask",
+          "type": "MASK",
+          "links": [
+            73,
+            78
+          ],
+          "slot_index": 1,
+          "shape": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LayerMask: SegmentAnythingUltra V2"
+      },
+      "widgets_values": [
+        "sam_vit_l (1.25GB)",
+        "GroundingDINO_SwinT_OGC (694MB)",
+        0.3,
+        "VITMatte",
+        6,
+        6,
+        0.01,
+        0.99,
+        false,
+        "hair,face,hands",
+        "cuda",
+        2,
+        false
+      ],
+      "color": "rgba(27, 80, 119, 0.7)"
+    },
+    {
+      "id": 49,
+      "type": "LayerMask: SegmentAnythingUltra V2",
+      "pos": {
+        "0": -2091,
+        "1": 2
+      },
+      "size": {
+        "0": 446.20928955078125,
+        "1": 366
+      },
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 84
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "links": [],
+          "slot_index": 0,
+          "shape": 3
+        },
+        {
+          "name": "mask",
+          "type": "MASK",
+          "links": [
+            85,
+            86
+          ],
+          "slot_index": 1,
+          "shape": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LayerMask: SegmentAnythingUltra V2"
+      },
+      "widgets_values": [
+        "sam_vit_l (1.25GB)",
+        "GroundingDINO_SwinT_OGC (694MB)",
+        0.3,
+        "VITMatte",
+        6,
+        6,
+        0.01,
+        0.99,
+        false,
+        "hands",
+        "cuda",
+        2,
+        false
+      ],
+      "color": "rgba(27, 80, 119, 0.7)"
+    },
+    {
+      "id": 52,
+      "type": "GrowMask",
+      "pos": {
+        "0": -1221,
+        "1": -419
+      },
+      "size": {
+        "0": 315,
+        "1": 82
+      },
+      "flags": {
+        "collapsed": false
+      },
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "mask",
+          "type": "MASK",
+          "link": 110
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [
+            91
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "GrowMask +10",
+      "properties": {
+        "Node name for S&R": "GrowMask"
+      },
+      "widgets_values": [
+        10,
+        true
+      ]
+    },
+    {
+      "id": 51,
+      "type": "MaskPreview+",
+      "pos": {
+        "0": -1265,
+        "1": 20
+      },
+      "size": {
+        "0": 220.26771545410156,
+        "1": 360.1703796386719
+      },
+      "flags": {},
+      "order": 13,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "mask",
+          "type": "MASK",
+          "link": 111
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "MaskPreview+"
+      }
+    },
+    {
+      "id": 6,
+      "type": "CatVTONWrapper",
+      "pos": {
+        "0": 54,
+        "1": -392
+      },
+      "size": {
+        "0": 217.03306579589844,
+        "1": 190
+      },
+      "flags": {},
+      "order": 23,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 4
+        },
+        {
+          "name": "mask",
+          "type": "MASK",
+          "link": 109
+        },
+        {
+          "name": "refer_image",
+          "type": "IMAGE",
+          "link": 101
+        },
+        {
+          "name": "seed",
+          "type": "INT",
+          "link": 99,
+          "widget": {
+            "name": "seed"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "links": [
+            7
+          ],
+          "slot_index": 0,
+          "shape": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CatVTONWrapper"
+      },
+      "widgets_values": [
+        15,
+        "fp32",
+        516128808716992,
+        "randomize",
+        45,
+        1.52
+      ]
+    },
+    {
+      "id": 57,
+      "type": "LayerUtility: Seed",
+      "pos": {
+        "0": 39,
+        "1": -115
+      },
+      "size": {
+        "0": 268.4396667480469,
+        "1": 82
+      },
+      "flags": {
+        "collapsed": false
+      },
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "seed",
+          "type": "INT",
+          "links": [
+            99
+          ],
+          "slot_index": 0,
+          "shape": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LayerUtility: Seed"
+      },
+      "widgets_values": [
+        244844284700637,
+        "randomize"
+      ],
+      "color": "rgba(38, 73, 116, 0.7)"
+    },
+    {
+      "id": 46,
+      "type": "MaskComposite",
+      "pos": {
+        "0": -1269,
+        "1": -164
+      },
+      "size": {
+        "0": 315,
+        "1": 126
+      },
+      "flags": {
+        "collapsed": false
+      },
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "destination",
+          "type": "MASK",
+          "link": 78
+        },
+        {
+          "name": "source",
+          "type": "MASK",
+          "link": 86
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [
+            110,
+            111
+          ],
+          "slot_index": 0,
+          "shape": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MaskComposite"
+      },
+      "widgets_values": [
+        0,
+        0,
+        "add"
+      ]
+    },
+    {
+      "id": 15,
+      "type": "ImageToMask",
+      "pos": {
+        "0": 245,
+        "1": -553
+      },
+      "size": {
+        "0": 210,
+        "1": 58
+      },
+      "flags": {
+        "collapsed": false
+      },
+      "order": 22,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 117
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [
+            109
+          ],
+          "slot_index": 0,
+          "shape": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ImageToMask"
+      },
+      "widgets_values": [
+        "red"
+      ]
+    },
+    {
+      "id": 32,
+      "type": "MaskPreview+",
+      "pos": {
+        "0": 86,
+        "1": 41
+      },
+      "size": {
+        "0": 220.26771545410156,
+        "1": 360.1703796386719
+      },
+      "flags": {},
+      "order": 18,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "mask",
+          "type": "MASK",
+          "link": 55
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "MaskPreview+"
+      }
+    },
+    {
+      "id": 48,
+      "type": "MaskPreview+",
+      "pos": {
+        "0": -1605,
+        "1": -10
+      },
+      "size": {
+        "0": 220.26771545410156,
+        "1": 360.1703796386719
+      },
+      "flags": {},
+      "order": 10,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "mask",
+          "type": "MASK",
+          "link": 85
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "MaskPreview+"
+      }
+    },
+    {
+      "id": 40,
+      "type": "MaskPreview+",
+      "pos": {
+        "0": -1580,
+        "1": -445
+      },
+      "size": {
+        "0": 220.26771545410156,
+        "1": 360.1703796386719
+      },
+      "flags": {},
+      "order": 9,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "mask",
+          "type": "MASK",
+          "link": 73
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "MaskPreview+"
+      }
+    },
+    {
+      "id": 7,
+      "type": "PreviewImage",
+      "pos": {
+        "0": 354,
+        "1": -405
+      },
+      "size": {
+        "0": 435.4642028808594,
+        "1": 678.0673828125
+      },
+      "flags": {},
+      "order": 24,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 7
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      }
+    },
+    {
+      "id": 65,
+      "type": "MaskPreview+",
+      "pos": {
+        "0": 43,
+        "1": 461
+      },
+      "size": {
+        "0": 220.26771545410156,
+        "1": 360.1703796386719
+      },
+      "flags": {},
+      "order": 21,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "mask",
+          "type": "MASK",
+          "link": 118
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "MaskPreview+"
+      }
+    },
+    {
+      "id": 5,
+      "type": "MaskPreview+",
+      "pos": {
+        "0": -202,
+        "1": 34
+      },
+      "size": {
+        "0": 220.26771545410156,
+        "1": 360.1703796386719
+      },
+      "flags": {},
+      "order": 8,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "mask",
+          "type": "MASK",
+          "link": 3
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "MaskPreview+"
+      }
+    },
+    {
+      "id": 62,
+      "type": "PreviewImage",
+      "pos": {
+        "0": -429,
+        "1": 32
+      },
+      "size": {
+        "0": 210,
+        "1": 246
+      },
+      "flags": {},
+      "order": 6,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 112
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      }
+    },
+    {
+      "id": 3,
+      "type": "LayerMask: SegmentAnythingUltra V2",
+      "pos": {
+        "0": -420,
+        "1": -394
+      },
+      "size": {
+        "0": 446.20928955078125,
+        "1": 366
+      },
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "links": [],
+          "slot_index": 0,
+          "shape": 3
+        },
+        {
+          "name": "mask",
+          "type": "MASK",
+          "links": [
+            3,
+            89
+          ],
+          "slot_index": 1,
+          "shape": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LayerMask: SegmentAnythingUltra V2"
+      },
+      "widgets_values": [
+        "sam_vit_l (1.25GB)",
+        "GroundingDINO_SwinT_OGC (694MB)",
+        0.35000000000000003,
+        "VITMatte",
+        6,
+        6,
+        0.01,
+        0.99,
+        false,
+        "skirt, jacket, pants, skirt",
+        "cuda",
+        2,
+        false
+      ],
+      "color": "rgba(27, 80, 119, 0.7)"
+    },
+    {
+      "id": 2,
+      "type": "LoadImage",
+      "pos": {
+        "0": -875,
+        "1": 516
+      },
+      "size": {
+        "0": 430,
+        "1": 740
+      },
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            101
+          ],
+          "slot_index": 0,
+          "shape": 3
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null,
+          "shape": 3
+        }
+      ],
+      "title": "clothes_image",
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "ND_02188_.png",
+        "image"
+      ]
+    },
+    {
+      "id": 64,
+      "type": "MaskPreview+",
+      "pos": {
+        "0": -316,
+        "1": 578
+      },
+      "size": {
+        "0": 220.26771545410156,
+        "1": 360.1703796386719
+      },
+      "flags": {},
+      "order": 7,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "mask",
+          "type": "MASK",
+          "link": 115
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "MaskPreview+"
+      }
+    },
+    {
+      "id": 31,
+      "type": "GrowMask",
+      "pos": {
+        "0": -276,
+        "1": -493
+      },
+      "size": {
+        "0": 315,
+        "1": 82
+      },
+      "flags": {
+        "collapsed": true
+      },
+      "order": 17,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "mask",
+          "type": "MASK",
+          "link": 53
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [
+            55,
+            113,
+            121
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "GrowMask -10",
+      "properties": {
+        "Node name for S&R": "GrowMask"
+      },
+      "widgets_values": [
+        -10,
+        true
+      ]
+    },
+    {
+      "id": 30,
+      "type": "GrowMask",
+      "pos": {
+        "0": -471,
+        "1": -532
+      },
+      "size": {
+        "0": 315,
+        "1": 82
+      },
+      "flags": {
+        "collapsed": true
+      },
+      "order": 16,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "mask",
+          "type": "MASK",
+          "link": 90
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [
+            53
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "GrowMask +10",
+      "properties": {
+        "Node name for S&R": "GrowMask"
+      },
+      "widgets_values": [
+        10,
+        true
+      ]
+    },
+    {
+      "id": 63,
+      "type": "MaskComposite",
+      "pos": {
+        "0": -360,
+        "1": 390
+      },
+      "size": {
+        "0": 315,
+        "1": 126
+      },
+      "flags": {
+        "collapsed": false
+      },
+      "order": 19,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "destination",
+          "type": "MASK",
+          "link": 113
+        },
+        {
+          "name": "source",
+          "type": "MASK",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [
+            118
+          ],
+          "slot_index": 0,
+          "shape": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MaskComposite"
+      },
+      "widgets_values": [
+        0,
+        0,
+        "add"
+      ]
+    },
+    {
+      "id": 38,
+      "type": "MaskToImage",
+      "pos": {
+        "0": -41,
+        "1": -530
+      },
+      "size": {
+        "0": 176.39999389648438,
+        "1": 26
+      },
+      "flags": {
+        "collapsed": false
+      },
+      "order": 20,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "mask",
+          "type": "MASK",
+          "link": 121
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            117
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MaskToImage"
+      }
+    },
+    {
+      "id": 1,
+      "type": "LoadImage",
+      "pos": {
+        "0": -919,
+        "1": -325
+      },
+      "size": {
+        "0": 426.2384948730469,
+        "1": 780.5548706054688
+      },
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            1,
+            4,
+            71,
+            84,
+            112
+          ],
+          "slot_index": 0,
+          "shape": 3
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [
+            115
+          ],
+          "slot_index": 1,
+          "shape": 3
+        }
+      ],
+      "title": "human_image",
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "clipspace/clipspace-mask-13624659.100000001.png [input]",
+        "image"
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      3,
+      0,
+      "IMAGE"
+    ],
+    [
+      3,
+      3,
+      1,
+      5,
+      0,
+      "MASK"
+    ],
+    [
+      4,
+      1,
+      0,
+      6,
+      0,
+      "IMAGE"
+    ],
+    [
+      7,
+      6,
+      0,
+      7,
+      0,
+      "IMAGE"
+    ],
+    [
+      53,
+      30,
+      0,
+      31,
+      0,
+      "MASK"
+    ],
+    [
+      55,
+      31,
+      0,
+      32,
+      0,
+      "MASK"
+    ],
+    [
+      71,
+      1,
+      0,
+      39,
+      0,
+      "IMAGE"
+    ],
+    [
+      73,
+      39,
+      1,
+      40,
+      0,
+      "MASK"
+    ],
+    [
+      78,
+      39,
+      1,
+      46,
+      0,
+      "MASK"
+    ],
+    [
+      84,
+      1,
+      0,
+      49,
+      0,
+      "IMAGE"
+    ],
+    [
+      85,
+      49,
+      1,
+      48,
+      0,
+      "MASK"
+    ],
+    [
+      86,
+      49,
+      1,
+      46,
+      1,
+      "MASK"
+    ],
+    [
+      89,
+      3,
+      1,
+      45,
+      0,
+      "MASK"
+    ],
+    [
+      90,
+      45,
+      0,
+      30,
+      0,
+      "MASK"
+    ],
+    [
+      91,
+      52,
+      0,
+      53,
+      0,
+      "MASK"
+    ],
+    [
+      93,
+      53,
+      0,
+      45,
+      1,
+      "MASK"
+    ],
+    [
+      99,
+      57,
+      0,
+      6,
+      3,
+      "INT"
+    ],
+    [
+      101,
+      2,
+      0,
+      6,
+      2,
+      "IMAGE"
+    ],
+    [
+      109,
+      15,
+      0,
+      6,
+      1,
+      "MASK"
+    ],
+    [
+      110,
+      46,
+      0,
+      52,
+      0,
+      "MASK"
+    ],
+    [
+      111,
+      46,
+      0,
+      51,
+      0,
+      "MASK"
+    ],
+    [
+      112,
+      1,
+      0,
+      62,
+      0,
+      "IMAGE"
+    ],
+    [
+      113,
+      31,
+      0,
+      63,
+      0,
+      "MASK"
+    ],
+    [
+      115,
+      1,
+      1,
+      64,
+      0,
+      "MASK"
+    ],
+    [
+      117,
+      38,
+      0,
+      15,
+      0,
+      "IMAGE"
+    ],
+    [
+      118,
+      63,
+      0,
+      65,
+      0,
+      "MASK"
+    ],
+    [
+      121,
+      31,
+      0,
+      38,
+      0,
+      "MASK"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.8264462809917354,
+      "offset": [
+        1893.3513467018836,
+        591.2416580135603
+      ]
+    }
+  },
+  "version": 0.4
+}

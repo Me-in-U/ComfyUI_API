@@ -1,0 +1,726 @@
+{
+  "last_node_id": 205,
+  "last_link_id": 293,
+  "nodes": [
+    {
+      "id": 195,
+      "type": "LoadImage",
+      "pos": {
+        "0": 400,
+        "1": 660
+      },
+      "size": {
+        "0": 230.23011779785156,
+        "1": 436.9679260253906
+      },
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            278
+          ],
+          "shape": 3
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null,
+          "shape": 3
+        }
+      ],
+      "title": "clothes_image",
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "ND_00048_.png",
+        "image"
+      ]
+    },
+    {
+      "id": 198,
+      "type": "PreviewImage",
+      "pos": {
+        "0": 150,
+        "1": 250
+      },
+      "size": {
+        "0": 233.94407653808594,
+        "1": 369.70703125
+      },
+      "flags": {
+        "collapsed": false
+      },
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 281
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      }
+    },
+    {
+      "id": 4,
+      "type": "LoadImage",
+      "pos": {
+        "0": 400,
+        "1": 180
+      },
+      "size": {
+        "0": 228.01138305664062,
+        "1": 435.387451171875
+      },
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            220,
+            237,
+            284
+          ],
+          "slot_index": 0,
+          "shape": 3
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null,
+          "slot_index": 1,
+          "shape": 3
+        }
+      ],
+      "title": "human_image",
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "ComfyUI_temp_upkkl_00004_.png",
+        "image"
+      ]
+    },
+    {
+      "id": 201,
+      "type": "GetImageSize+",
+      "pos": {
+        "0": 462,
+        "1": 138
+      },
+      "size": {
+        "0": 214.20001220703125,
+        "1": 66
+      },
+      "flags": {
+        "collapsed": true
+      },
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 284
+        }
+      ],
+      "outputs": [
+        {
+          "name": "width",
+          "type": "INT",
+          "links": [
+            285,
+            290
+          ],
+          "slot_index": 0,
+          "shape": 3
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "links": [
+            286,
+            291
+          ],
+          "slot_index": 1,
+          "shape": 3
+        },
+        {
+          "name": "count",
+          "type": "INT",
+          "links": null,
+          "shape": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "GetImageSize+"
+      }
+    },
+    {
+      "id": 204,
+      "type": "ImageResize+",
+      "pos": {
+        "0": 654,
+        "1": 139
+      },
+      "size": {
+        "0": 309.6962890625,
+        "1": 176.80496215820312
+      },
+      "flags": {
+        "collapsed": true
+      },
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 292
+        },
+        {
+          "name": "width",
+          "type": "INT",
+          "link": 290,
+          "widget": {
+            "name": "width"
+          }
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "link": 291,
+          "widget": {
+            "name": "height"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            293
+          ],
+          "slot_index": 0,
+          "shape": 3
+        },
+        {
+          "name": "width",
+          "type": "INT",
+          "links": null,
+          "shape": 3
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "links": null,
+          "shape": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ImageResize+"
+      },
+      "widgets_values": [
+        512,
+        512,
+        "nearest",
+        "stretch",
+        "always",
+        0
+      ]
+    },
+    {
+      "id": 202,
+      "type": "ImageResize+",
+      "pos": {
+        "0": 651,
+        "1": 671
+      },
+      "size": {
+        "0": 309.6962890625,
+        "1": 176.80496215820312
+      },
+      "flags": {
+        "collapsed": true
+      },
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 287
+        },
+        {
+          "name": "width",
+          "type": "INT",
+          "link": 285,
+          "widget": {
+            "name": "width"
+          }
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "link": 286,
+          "widget": {
+            "name": "height"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            289
+          ],
+          "slot_index": 0,
+          "shape": 3
+        },
+        {
+          "name": "width",
+          "type": "INT",
+          "links": null,
+          "shape": 3
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "links": null,
+          "shape": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ImageResize+"
+      },
+      "widgets_values": [
+        512,
+        512,
+        "nearest",
+        "stretch",
+        "always",
+        0
+      ]
+    },
+    {
+      "id": 205,
+      "type": "PreviewImage",
+      "pos": {
+        "0": 640,
+        "1": 247
+      },
+      "size": {
+        "0": 236.37669372558594,
+        "1": 369.62847900390625
+      },
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 293
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      }
+    },
+    {
+      "id": 170,
+      "type": "ConstrainImage|pysssss",
+      "pos": {
+        "0": 900,
+        "1": 250
+      },
+      "size": {
+        "0": 315,
+        "1": 154
+      },
+      "flags": {
+        "collapsed": false
+      },
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 237
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            238
+          ],
+          "slot_index": 0,
+          "shape": 6
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ConstrainImage|pysssss"
+      },
+      "widgets_values": [
+        768,
+        768,
+        0,
+        0,
+        "no"
+      ]
+    },
+    {
+      "id": 203,
+      "type": "PreviewImage",
+      "pos": {
+        "0": 641,
+        "1": 722
+      },
+      "size": {
+        "0": 237.7298126220703,
+        "1": 377.40460205078125
+      },
+      "flags": {
+        "collapsed": false
+      },
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 289
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      }
+    },
+    {
+      "id": 1,
+      "type": "IDM_VTON_PIPELINE_NN",
+      "pos": {
+        "0": 1234,
+        "1": 256
+      },
+      "size": {
+        "0": 315,
+        "1": 58
+      },
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "pipeline",
+          "type": "PIPE_LINE",
+          "links": [
+            1
+          ],
+          "slot_index": 0,
+          "shape": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "IDM_VTON_PIPELINE_NN"
+      },
+      "widgets_values": [
+        true
+      ]
+    },
+    {
+      "id": 3,
+      "type": "DensePosePreprocessor",
+      "pos": {
+        "0": 900,
+        "1": 470
+      },
+      "size": {
+        "0": 315,
+        "1": 106
+      },
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 220
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            2,
+            281
+          ],
+          "slot_index": 0,
+          "shape": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DensePosePreprocessor"
+      },
+      "widgets_values": [
+        "densepose_r50_fpn_dl.torchscript",
+        "Viridis (MagicAnimate)",
+        512
+      ]
+    },
+    {
+      "id": 2,
+      "type": "IDM_VTON_NN",
+      "pos": {
+        "0": 1230,
+        "1": 370
+      },
+      "size": {
+        "0": 400,
+        "1": 280
+      },
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "pipeline",
+          "type": "PIPE_LINE",
+          "link": 1
+        },
+        {
+          "name": "human_image",
+          "type": "IMAGE",
+          "link": 238
+        },
+        {
+          "name": "clothes_image",
+          "type": "IMAGE",
+          "link": 278
+        },
+        {
+          "name": "densepose_image",
+          "type": "IMAGE",
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "links": [
+            287
+          ],
+          "slot_index": 0,
+          "shape": 3
+        },
+        {
+          "name": "mask_image",
+          "type": "IMAGE",
+          "links": [],
+          "slot_index": 1,
+          "shape": 3
+        },
+        {
+          "name": "mask_gray_image",
+          "type": "IMAGE",
+          "links": [
+            292
+          ],
+          "slot_index": 2,
+          "shape": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "IDM_VTON_NN"
+      },
+      "widgets_values": [
+        "dresses",
+        "bride, (luxury wedding dress:1.3), elegant floor-length skirt,  full body portrait, wedding dress, (beautiful wedding dress:1.2), best quality, best shadow, masterpiece, realistic, photo-realistic, realism, finely detail, Super Resolution, super detail, ultra-detailed, ultra high res",
+        false,
+        false,
+        40,
+        1468009703,
+        "randomize"
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      2,
+      0,
+      "PIPE_LINE"
+    ],
+    [
+      2,
+      3,
+      0,
+      2,
+      3,
+      "IMAGE"
+    ],
+    [
+      220,
+      4,
+      0,
+      3,
+      0,
+      "IMAGE"
+    ],
+    [
+      237,
+      4,
+      0,
+      170,
+      0,
+      "IMAGE"
+    ],
+    [
+      238,
+      170,
+      0,
+      2,
+      1,
+      "IMAGE"
+    ],
+    [
+      278,
+      195,
+      0,
+      2,
+      2,
+      "IMAGE"
+    ],
+    [
+      281,
+      3,
+      0,
+      198,
+      0,
+      "IMAGE"
+    ],
+    [
+      284,
+      4,
+      0,
+      201,
+      0,
+      "IMAGE"
+    ],
+    [
+      285,
+      201,
+      0,
+      202,
+      1,
+      "INT"
+    ],
+    [
+      286,
+      201,
+      1,
+      202,
+      2,
+      "INT"
+    ],
+    [
+      287,
+      2,
+      0,
+      202,
+      0,
+      "IMAGE"
+    ],
+    [
+      289,
+      202,
+      0,
+      203,
+      0,
+      "IMAGE"
+    ],
+    [
+      290,
+      201,
+      0,
+      204,
+      1,
+      "INT"
+    ],
+    [
+      291,
+      201,
+      1,
+      204,
+      2,
+      "INT"
+    ],
+    [
+      292,
+      2,
+      2,
+      204,
+      0,
+      "IMAGE"
+    ],
+    [
+      293,
+      204,
+      0,
+      205,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [
+    {
+      "title": "IDM-VTON",
+      "bounding": [
+        141,
+        90,
+        1520,
+        1023
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 1.4641000000000035,
+      "offset": [
+        -95.05073663543413,
+        -66.86980505730457
+      ]
+    }
+  },
+  "version": 0.4
+}

@@ -1,6 +1,7 @@
 import base64
 import json
 import os
+import time
 
 import psutil
 from flask import Flask, jsonify, redirect, render_template, request
@@ -68,6 +69,7 @@ def encode_image_to_base64(image_path):
         return base64.b64encode(image_file.read()).decode("utf-8")
 
 
+#! ComfyUI 관련
 def is_comfyui_running():
     # cmdline에 'ComfyUI'라는 단어가 포함된 프로세스가 실행 중인지 확인
     for process in psutil.process_iter(["pid", "name", "cmdline"]):
@@ -105,6 +107,7 @@ def clear_memory():
     print("메모리 클리어")
 
 
+#! Flask Route
 @app.route("/")
 def main():
     # comfyUI 켜야함
@@ -134,6 +137,7 @@ def terminate():
         return "ComfyUI 프로세스가 실행 중이 아닙니다."
 
 
+#! Flask Route(사람 + 프롬프트)
 @app.route("/human_plus_dress", methods=["POST"])
 def img_human_plus_dress():
     try:
@@ -179,51 +183,7 @@ def img_human_plus_dress():
         return jsonify({"error": str(e)}), 500
 
 
-@app.route("/new_dress_test", methods=["POST"])
-def img_new_dress_test():
-    try:
-        result_image_paths = [
-            "E:\\ComfyUI0.2.2\\ComfyUI\\output\\ND_00210.png",
-            "E:\\Languages\\Apache24\\ComfyUIAPI\\output\\ND\\dress_1225.jpg",
-            "E:\\Languages\\Apache24\\ComfyUI_API\\output\\ND\\dress_542.jpg",
-            "E:\\Languages\\Apache24\\ComfyUIAPI\\output\\ND\\dress_1271.jpg",
-            "E:\\Languages\\Apache24\\ComfyUIAPI\\output\\ND\\dress_276.jpg",
-            "E:\\Languages\\Apache24\\ComfyUIAPI\\output\\ND\\dress_730.jpg",
-        ]
-        result_image_paths2 = [
-            "E:\\Languages\\Apache24\\ComfyUIAPI\\output\\ND\\dress_918.jpg",
-            "E:\\Languages\\Apache24\\ComfyUIAPI\\output\\ND\\dress_937.jpg",
-            "",
-            "",
-            "",
-            "",
-        ]
-        image_map_keys = []
-        global IMAGE_PATH_MAP
-        global IMAGE_KEY
-        #  new_dress 이미지 경로를 imagePathMapping에 추가
-        for path in result_image_paths:
-            IMAGE_PATH_MAP[IMAGE_KEY] = path
-            image_map_keys.append(IMAGE_KEY)
-            IMAGE_KEY += 1  # imagecount를 증가시켜 다음 키로 설정
-
-        print(IMAGE_PATH_MAP)
-        # 결과 이미지를 Base64로 인코딩하여 반환
-        encoded_images = [encode_image_to_base64(path) for path in result_image_paths]
-
-        return jsonify(
-            {
-                "message": SUCCESS_MESSAGE_TEST,
-                "results": encoded_images,
-                "imageMapKeys": image_map_keys,
-            },
-        )
-
-    except Exception as e:
-        print(f"Flask An error occurred: {e}")
-        return jsonify({"error": str(e)}), 500
-
-
+#! Flask Route(프롬프트)
 @app.route("/new_dress", methods=["POST"])
 def img_new_dress():
     try:
@@ -303,11 +263,52 @@ def img_new_dress():
         return jsonify({"error": str(e)}), 500
 
 
+#! Flask Route(프롬프트 TEST)
+@app.route("/new_dress_test", methods=["POST"])
+def img_new_dress_test():
+    time.sleep(1)
+    try:
+        result_image_paths = [
+            "E:\\Languages\\Apache24\\ComfyUI_API\\output\\ND\\dress_276.jpg",
+            "E:\\Languages\\Apache24\\ComfyUI_API\\output\\ND\\dress_542.jpg",
+            "E:\\Languages\\Apache24\\ComfyUI_API\\output\\ND\\dress_730.jpg",
+            "E:\\Languages\\Apache24\\ComfyUI_API\\output\\ND\\dress_918.jpg",
+            "E:\\Languages\\Apache24\\ComfyUI_API\\output\\ND\\dress_937.jpg",
+            "E:\\Languages\\Apache24\\ComfyUI_API\\output\\ND\\dress_1271.jpg",
+        ]
+        image_map_keys = []
+        global IMAGE_PATH_MAP
+        global IMAGE_KEY
+        #  new_dress 이미지 경로를 imagePathMapping에 추가
+        for path in result_image_paths:
+            IMAGE_PATH_MAP[IMAGE_KEY] = path
+            image_map_keys.append(IMAGE_KEY)
+            IMAGE_KEY += 1  # imagecount를 증가시켜 다음 키로 설정
+
+        print(IMAGE_PATH_MAP)
+        # 결과 이미지를 Base64로 인코딩하여 반환
+        encoded_images = [encode_image_to_base64(path) for path in result_image_paths]
+
+        return jsonify(
+            {
+                "message": SUCCESS_MESSAGE_TEST,
+                "results": encoded_images,
+                "imageMapKeys": image_map_keys,
+            },
+        )
+
+    except Exception as e:
+        print(f"Flask An error occurred: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+#! Flask Route(Single CAT VTON)
 @app.route("/vton_dress", methods=["POST"])
 def img_vton_dress():
     try:
         # 워크플로우 로드
-        workflow_path = os.path.join(WORKFLOW_DIRECTORY, "vton_api.json")
+        # workflow_path = os.path.join(WORKFLOW_DIRECTORY, "vton_api.json")
+        workflow_path = os.path.join(WORKFLOW_DIRECTORY, "cat_vton_api.json")
         workflow = load_workflow(workflow_path)
 
         # 사진 읽고 저장
@@ -323,7 +324,10 @@ def img_vton_dress():
         image_file2.save(image_path2)
 
         # 실행 및 결과 이미지 경로 받기
-        vton_image_paths = vton_dress(
+        # vton_image_paths = vton_dress(
+        #     workflow, image_path1, image_path2, save_previews=True
+        # )
+        vton_image_paths = vton_dress_cat(
             workflow, image_path1, image_path2, save_previews=True
         )
 
@@ -340,6 +344,7 @@ def img_vton_dress():
         return jsonify({"error": str(e)}), 500
 
 
+#! Flask Route(Multi IDM VTON)
 @app.route("/vton_dress_multi", methods=["POST"])
 def img_vton_dress_multi():
     try:
@@ -398,6 +403,7 @@ def img_vton_dress_multi():
         return jsonify({"error": str(e)}), 500
 
 
+#! Flask Route(Multi CAT VTON)
 @app.route("/vton_dress_multi_cat", methods=["POST"])
 def img_vton_dress_multi_cat():
     try:
@@ -456,8 +462,10 @@ def img_vton_dress_multi_cat():
         return jsonify({"error": str(e)}), 500
 
 
+#! Flask Route(Multi CAT VTON TEST)
 @app.route("/vton_dress_test", methods=["POST"])
 def img_vton_dress_test():
+    time.sleep(1)
     try:
         # # 사진 읽고 저장
         image_file = request.files["myPic"]
@@ -467,21 +475,14 @@ def img_vton_dress_test():
         print(image_file)
 
         result_image_paths = [
-            "E:\\ComfyUI0.2.2\\ComfyUI\\output\\ND_00210.png",
-            "E:\\Languages\\Apache24\\ComfyUIAPI\\output\\ND\\dress_1225.jpg",
-            "E:\\ComfyUI_0.2.2\\ComfyUI\\temp\\ComfyUI_temp_npipu_00003_.png",
-            "E:\ComfyUI_0.2.2\ComfyUI\temp\ComfyUI_temp_npipu_00007_.png",
-            "E:\ComfyUI_0.2.2\ComfyUI\temp\ComfyUI_temp_npipu_00016_.png",
-            "E:\ComfyUI_0.2.2\ComfyUI\temp\ComfyUI_temp_npipu_00017_.png",
+            "E:\\ComfyUI_0.2.2\\ComfyUI\\output\\Cat_VTON_00001_.png",
+            "E:\\ComfyUI_0.2.2\\ComfyUI\\output\\Cat_VTON_00002_.png",
+            "E:\\ComfyUI_0.2.2\\ComfyUI\\output\\Cat_VTON_00003_.png",
+            "E:\\ComfyUI_0.2.2\\ComfyUI\\output\\Cat_VTON_00004_.png",
+            "E:\\ComfyUI_0.2.2\\ComfyUI\\output\\Cat_VTON_00005_.png",
+            "E:\\ComfyUI_0.2.2\\ComfyUI\\output\\Cat_VTON_00006_.png",
         ]
-        result_image_paths2 = [
-            "E:\ComfyUI_0.2.2\ComfyUI\temp\ComfyUI_temp_npipu_00018_.png",
-            "E:\ComfyUI_0.2.2\ComfyUI\temp\ComfyUI_temp_npipu_00023_.png",
-            "",
-            "",
-            "",
-            "",
-        ]
+
         encoded_images = []
         for path in result_image_paths:
             encoded_images.append(encode_image_to_base64(path))
@@ -490,9 +491,6 @@ def img_vton_dress_test():
         encoded_images.append(encode_image_to_base64(human_image_path))
         print(encoded_images)
 
-        # 메모리 비우기
-        clear_memory()
-
         return jsonify({"message": SUCCESS_MESSAGE, "results": encoded_images})
 
     except Exception as e:
@@ -500,6 +498,7 @@ def img_vton_dress_test():
         return jsonify({"error": str(e)}), 500
 
 
+#! Flask Route(Return Similar Dresses)
 @app.route("/get_similar_dresses", methods=["POST"])
 def get_similar_dresses():
     try:
@@ -528,6 +527,7 @@ def get_similar_dresses():
         return jsonify({"error": str(e)}), 500
 
 
+#! Flask Route(Return Current Queue Size)
 @app.route("/queue_size", methods=["GET"])
 def queue_size():
     try:
