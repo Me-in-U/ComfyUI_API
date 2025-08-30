@@ -65,4 +65,4 @@ Starting server
 - [vae-ft-mse-840000-ema-pruned](https://huggingface.co/stabilityai/sd-vae-ft-mse-original/blob/main/vae-ft-mse-840000-ema-pruned.ckpt)
 
 ## Used FrontEnd
-- https://github.com/Roniebin/Armigo_
+- [https://github.com/Roniebin/Armigo_](https://github.com/Roniebin/Armigo_)
